@@ -19,8 +19,7 @@ int main(int argc, char **argv) {
         ssize_t len = 0;
         ssize_t offset = 0;
         ssize_t r;
-        HGLOBAL h = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT,
-                                BUF_SIZE * sizeof(WCHAR));
+        HGLOBAL h = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, BUF_SIZE * sizeof(WCHAR));
         LPTSTR g_buf = GlobalLock(h);
         while ((r = read(0, g_buf + offset, READ_SIZE * sizeof(WCHAR))) > 0) {
             offset += r;
@@ -38,7 +37,7 @@ int main(int argc, char **argv) {
         const size_t sleep_time_ms = 100;
         BOOL ok = FALSE;
         while (attempts < max) {
-            if (OpenClipboard(NULL)) {
+            if (OpenClipboard(nullptr)) {
                 EmptyClipboard();
                 if (!SetClipboardData(CF_TEXT, h)) {
                     break;
@@ -46,8 +45,11 @@ int main(int argc, char **argv) {
                 ok = TRUE;
                 break;
             }
-            fprintf(stderr, "OpenClipboard() failed, attempt %lu of %lu: %d\n",
-                    attempts + 1, max, GetLastError());
+            fprintf(stderr,
+                    "OpenClipboard() failed, attempt %lu of %lu: %d\n",
+                    attempts + 1,
+                    max,
+                    GetLastError());
             attempts++;
             Sleep(sleep_time_ms);
         }

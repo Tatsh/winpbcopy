@@ -3,7 +3,7 @@
 #include <windows.h>
 
 int main(int argc, char **argv) {
-    if (OpenClipboard(NULL)) {
+    if (OpenClipboard(nullptr)) {
         char *data = (char *)GetClipboardData(CF_TEXT);
         if (data) {
             printf("%s", data);
