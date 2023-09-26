@@ -1,0 +1,11 @@
+{
+  "configurations": [
+    {
+      "compilerPath": "C:\\msys64\\mingw64\\bin\\gcc.exe",
+      "defines": [],
+      "includePath": ["${default}", "${workspaceFolder}"],
+      "name": "MSYS2"
+    }
+  ],
+  "version": 4
+}
