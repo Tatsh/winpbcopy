@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26 FATAL_ERROR)
-project(winpbcopy VERSION 0.0.1)
+project(winpbcopy VERSION 0.0.2)
 include(GNUInstallDirs)
 
 set(GCC_CLANG_SHARED_C_FLAGS "-fno-builtin;-std=gnu2x")

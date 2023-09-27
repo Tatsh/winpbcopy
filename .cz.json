@@ -1,15 +1,12 @@
 {
   "commitizen": {
-    "post_bump_hooks": [
-      "./post-bump.sh"
-    ],
     "tag_format": "v$version",
     "version_files": [
       "CMakeLists.txt",
       "README.md",
-      "package.json",
       "man/pbcopy.1",
-      "man/pbpaste.1"
+      "man/pbpaste.1",
+      "package.json"
     ],
     "version_provider": "npm",
     "version_scheme": "semver"

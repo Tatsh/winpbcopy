@@ -4,7 +4,7 @@
 [![Build](https://github.com/Tatsh/winpbcopy/actions/workflows/cmake.yml/badge.svg)](https://github.com/Tatsh/winpbcopy/actions/workflows/cmake.yml)
 ![GitHub tag (with filter)](https://img.shields.io/github/v/tag/Tatsh/winpbcopy)
 ![GitHub](https://img.shields.io/github/license/Tatsh/winpbcopy)
-![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/winpbcopy/v0.0.1/master)
+![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/winpbcopy/v0.0.2/master)
 
 An equivalent of macOS' `pbcopy` and `pbpaste` commands.
 
