@@ -1,8 +1,7 @@
 # winpbcopy
 
 [![QA](https://github.com/Tatsh/winpbcopy/actions/workflows/qa.yml/badge.svg)](https://github.com/Tatsh/winpbcopy/actions/workflows/qa.yml)
-[![Tests](https://github.com/Tatsh/winpbcopy/actions/workflows/tests.yml/badge.svg)](https://github.com/Tatsh/winpbcopy/actions/workflows/tests.yml)
-[![Coverage Status](https://coveralls.io/repos/github/Tatsh/winpbcopy/badge.svg?branch=master)](https://coveralls.io/github/Tatsh/winpbcopy?branch=master)
+[![Build](https://github.com/Tatsh/winpbcopy/actions/workflows/cmake.yml/badge.svg)](https://github.com/Tatsh/winpbcopy/actions/workflows/cmake.yml)
 ![GitHub tag (with filter)](https://img.shields.io/github/v/tag/Tatsh/winpbcopy)
 ![GitHub](https://img.shields.io/github/license/Tatsh/winpbcopy)
 ![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/winpbcopy/v0.0.1/master)

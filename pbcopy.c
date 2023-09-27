@@ -3,11 +3,14 @@
 #define isatty _isatty
 #endif
 #include <stdio.h>
-#include <stdlib.h>
 #ifdef __WINE__
 #include <unistd.h>
 #endif
 
+#if defined(_MSC_VER)
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
+#endif
 #include <windows.h>
 
 static const int BUF_SIZE = 10 * 1024 * 1024;

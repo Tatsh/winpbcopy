@@ -20,6 +20,7 @@ kdev
 msvc
 msys
 mypy
+nsis
 nullptr
 parens
 pbcopy
@@ -36,6 +37,7 @@ udvare
 wdeprecated
 wempty
 werror
+winpb
 winpbcopy
 wmissing
 wparentheses

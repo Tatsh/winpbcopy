@@ -16,7 +16,7 @@ jobs:
           languages: ${{ matrix.language }}
       - run: |
           cmake .
-          make
+          cmake --build .
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
         with:

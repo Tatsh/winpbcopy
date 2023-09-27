@@ -49,7 +49,9 @@ if(CMAKE_COMPILER_IS_GNUCC OR ${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
 elseif(MSVC)
   # Disable warnings about secure CRT, but still enable compatible signature
   # versions http://stackoverflow.com/a/119752/374110
-  target_compile_definitions(pbcopy _CRT_SECURE_NO_WARNINGS nullptr=NULL)
-  target_compile_definitions(pbpaste _CRT_SECURE_NO_WARNINGS nullptr=NULL)
+  target_compile_definitions(pbcopy PRIVATE _CRT_SECURE_NO_WARNINGS nullptr=NULL)
+  target_compile_definitions(pbpaste PRIVATE _CRT_SECURE_NO_WARNINGS nullptr=NULL)
 endif()
 install(TARGETS pbcopy pbpaste DESTINATION ${CMAKE_INSTALL_BINDIR})
+set(CPACK_GENERATOR "NSIS;ZIP")
+include(CPack)
