@@ -18,7 +18,7 @@ jobs:
         id: latest_tag
         uses: WyriHaximus/github-action-get-previous-tag@v1
       - name: Configure
-        run: cmake -B ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} -DCMAKE_VERBOSE_MAKEFILE=ON --install-prefix ${{github.workspace}}/build/prefix
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_VERBOSE_MAKEFILE=ON --install-prefix ${{github.workspace}}/build/prefix
       - name: Build
         run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
       - name: Install
