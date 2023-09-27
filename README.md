@@ -6,11 +6,17 @@
 ![GitHub](https://img.shields.io/github/license/Tatsh/winpbcopy)
 ![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/winpbcopy/v0.0.1/master)
 
-Apple has their own special binary cookie format, undocumented, in use on both OS X and heavily on iOS.
+An equivalent of macOS' `pbcopy` and `pbpaste` commands.
 
 ## How to build
 
 ### MSYS2
+
+Requirements:
+
+- `cmake`
+- `mingw64/mingw-w64-x86_64-gcc`
+- `make` or `ninja`
 
 ```shell
 mkdir build
