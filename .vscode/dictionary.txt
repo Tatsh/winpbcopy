@@ -1,5 +1,8 @@
 bindir
+codeql
+cpack
 cpptools
+dcmake
 ehthumbs
 esbenp
 esbonio
@@ -8,6 +11,7 @@ gmem
 gmock
 gnucc
 gtest
+haximus
 hglobal
 htmlcov
 iwyu
@@ -24,6 +28,7 @@ pycache
 pylance
 pytest
 reflow
+softprops
 strequal
 struct
 tatsh
@@ -42,4 +47,5 @@ wuninitialized
 wunknown
 wunreachable
 wunused
+wyri
 zeroinit
