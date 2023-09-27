@@ -17,6 +17,7 @@ htmlcov
 iwyu
 jinja
 kdev
+mandir
 msvc
 msys
 mypy
