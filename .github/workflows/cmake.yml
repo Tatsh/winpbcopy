@@ -29,8 +29,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ${{steps.fixed_workspace.outputs.out}}/winpb*.exe
-            ${{steps.fixed_workspace.outputs.out}}/winpb*.zip
+            ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.exe
+            ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.zip
           tag_name: ${{ steps.latest_tag.outputs.tag }}
 name: Build
 'on':
