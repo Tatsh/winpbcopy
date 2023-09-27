@@ -2,7 +2,7 @@
 
 #include <windows.h>
 
-int main(int argc, char **argv) {
+int main() {
     if (OpenClipboard(nullptr)) {
         char *data = (char *)GetClipboardData(CF_TEXT);
         if (data) {

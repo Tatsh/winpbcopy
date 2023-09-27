@@ -1,30 +1,32 @@
 #if defined(WIN32) && !defined(__WINE__)
 #include <io.h>
 #define isatty _isatty
+#define read _read
 #endif
 #include <stdio.h>
-#ifdef __WINE__
+#include <stdlib.h>
+#if defined(__WINE__) || defined(__GNUC__)
 #include <unistd.h>
 #endif
 
 #if defined(_MSC_VER)
 #include <BaseTsd.h>
-typedef SSIZE_T ssize_t;
+typedef SIZE_T size_t;
 #endif
 #include <windows.h>
 
-static const int BUF_SIZE = 10 * 1024 * 1024;
-static const int READ_SIZE = 512;
+static const size_t BUF_SIZE = 10 * 1024 * 1024;
+static const size_t READ_SIZE = 512;
 
-int main(int argc, char **argv) {
-    if (!isatty(0)) {
+int main() {
+    if (!isatty(fileno(stdin))) {
         // Read stdin to a global buffer
-        ssize_t len = 0;
-        ssize_t offset = 0;
-        ssize_t r;
+        size_t len = 0;
+        int offset = 0;
+        int r;
         HGLOBAL h = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, BUF_SIZE * sizeof(WCHAR));
         LPTSTR g_buf = GlobalLock(h);
-        while ((r = read(0, g_buf + offset, READ_SIZE * sizeof(WCHAR))) > 0) {
+        while ((r = read(fileno(stdin), g_buf + offset, READ_SIZE * sizeof(WCHAR))) > 0) {
             offset += r;
             len += r;
             if (len >= BUF_SIZE) {
@@ -35,9 +37,9 @@ int main(int argc, char **argv) {
         g_buf[len] = 0;
         GlobalUnlock(h);
         // Set the clipboard data
-        size_t attempts = 0;
-        const size_t max = 5;
-        const size_t sleep_time_ms = 100;
+        int attempts = 0;
+        const int max = 5;
+        const DWORD sleep_time_ms = 100;
         BOOL ok = FALSE;
         while (attempts < max) {
             if (OpenClipboard(nullptr)) {
@@ -49,7 +51,7 @@ int main(int argc, char **argv) {
                 break;
             }
             fprintf(stderr,
-                    "OpenClipboard() failed, attempt %lu of %lu: %d\n",
+                    "OpenClipboard() failed, attempt %d of %d: %d\n",
                     attempts + 1,
                     max,
                     GetLastError());
