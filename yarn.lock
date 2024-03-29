@@ -394,10 +394,10 @@
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
-"@prettier/plugin-xml@^3.3.1":
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/@prettier/plugin-xml/-/plugin-xml-3.3.1.tgz#b89fcc95b909128fa2e0691f68b34ad25052971b"
-  integrity sha512-kllNJk6n2pXJjGWdj+HAr1GhOoOTrlmeWkDYCGBzkyZS2l0K6h2gsUQcVif2cNqAE1MNC+nUrzN6QwEsCukPnQ==
+"@prettier/plugin-xml@^3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@prettier/plugin-xml/-/plugin-xml-3.4.0.tgz#1e7ea059f3c1453fcfb1c27134fb54705855ecc8"
+  integrity sha512-mlaW4reoLu58u+jaRrth4XuQtChx2Llj7EhqeE4McwdZ6Ya/iY9asdYgHicM8A9f9RwrozwK92xyuyKYxk7HNA==
   dependencies:
     "@xml-tools/parser" "^1.0.11"
 
