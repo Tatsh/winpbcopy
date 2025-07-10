@@ -1,3 +1,4 @@
+*.info
 *.kate-swp
 *.log
 *~
@@ -8,10 +9,12 @@
 .directory
 .pnp.*
 /.yarn/install-state.gz
+/CMakeUserPresets.json
 /build/
 /dist/
 /docs/_build/
 /man/_static/
+/vcpkg_installed/
 __pycache__/
 htmlcov/
 node_modules/

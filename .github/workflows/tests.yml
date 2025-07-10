@@ -9,12 +9,11 @@ jobs:
         with:
           fetch-depth: 0
       - name: Install dependencies
-        run: sudo apt-get install -y lcov
+        run: sudo apt-get install -y lcov libcmocka-dev
       - name: Configure
         run: >-
           cmake -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -B ${{github.workspace}}/build
-          --install-prefix ${{github.workspace}}/build/prefix
-          -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON -DCOVERAGE=ON
+          --install-prefix ${{github.workspace}}/build/prefix -DBUILD_TESTS=ON
       - name: Build
         run: cmake --build ${{github.workspace}}/build --verbose --config ${{matrix.build-type}}
       - name: Install

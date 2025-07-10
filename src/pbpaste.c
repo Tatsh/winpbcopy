@@ -1,7 +1,10 @@
 #include <stdio.h>
+#include <string.h>
 
-#ifndef TESTING
+#ifdef _WIN32
 #include <windows.h>
+#else
+#include "decls.h"
 #endif
 
 /**

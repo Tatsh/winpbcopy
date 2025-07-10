@@ -1,4 +1,8 @@
 *.1
+*.c
+*.cpp
+*.h
+*.in
 *.j2
 *.jsonnet
 *.kate-swp

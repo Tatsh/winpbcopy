@@ -16,6 +16,7 @@ dcmake
 dcoverage
 docstrings
 doxyfile
+endforeach
 esbenp
 gcov
 geninfo
@@ -29,6 +30,7 @@ gtest
 hglobal
 htmlcov
 interprocedural
+isatty
 iwyu
 jsonnet
 jsonschema
@@ -75,3 +77,4 @@ wunknown
 wunreachable
 wunused
 yarnpip
+zeroinit
