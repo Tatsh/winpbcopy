@@ -2,11 +2,14 @@
   "commitizen": {
     "tag_format": "v$version",
     "version_files": [
+      ".wiswa.jsonnet",
+      "CITATION.cff",
       "CMakeLists.txt",
       "README.md",
       "man/pbcopy.1",
       "man/pbpaste.1",
-      "package.json"
+      "package.json",
+      "vcpkg.json"
     ],
     "version_provider": "npm",
     "version_scheme": "semver"

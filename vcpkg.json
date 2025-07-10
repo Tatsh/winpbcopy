@@ -1,0 +1,15 @@
+{
+  "dependencies": [
+    {
+      "name": "ecm",
+      "version>=": "6.7.0"
+    }
+  ],
+  "description": "pbcopy/paste for Windows.",
+  "documentation": "https://winpbcopy.readthedocs.org",
+  "homepage": "https://tatsh.github.io/winpbcopy/",
+  "license": "MIT",
+  "maintainers": ["Andrew Udvare <audvare@gmail.com>"],
+  "name": "winpbcopy",
+  "version": "0.0.2"
+}

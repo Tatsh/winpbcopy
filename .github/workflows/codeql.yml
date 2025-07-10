@@ -1,35 +1,34 @@
----
 jobs:
   analyze:
-    name: Analyze
+    name: 'Analyze'
     permissions:
-      actions: read
-      contents: read
-      security-events: write
-    runs-on: windows-latest
+      actions: 'read'
+      contents: 'read'
+      security-events: 'write'
+    runs-on: 'ubuntu-latest'
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
+      - name: 'Checkout repository'
+        uses: 'actions/checkout@v4'
+      - name: 'Initialize CodeQL'
+        uses: 'github/codeql-action/init@v3'
         with:
-          languages: ${{ matrix.language }}
-      - run: |
-          cmake .
-          cmake --build .
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+          languages: '${{ matrix.language }}'
+      - name: 'Perform CodeQL Analysis'
+        uses: 'github/codeql-action/analyze@v3'
         with:
-          category: /language:${{matrix.language}}
+          category: '/language:${{matrix.language}}'
     strategy:
       fail-fast: false
       matrix:
-        language: ['cpp']
-name: CodeQL
+        language:
+          - 'cpp'
+name: 'CodeQL'
 'on':
   pull_request:
-    branches: ['master']
+    branches:
+      - 'master'
   push:
-    branches: ['master']
+    branches:
+      - 'master'
   schedule:
-    - cron: 19 1 * * 1
+    - cron: '15 4 * * 3'

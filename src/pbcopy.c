@@ -13,12 +13,23 @@
 #include <BaseTsd.h>
 typedef SIZE_T size_t;
 #endif
+#ifndef TESTING
 #include <windows.h>
+#endif
 
 static const size_t BUF_SIZE = 10 * 1024 * 1024;
 static const size_t READ_SIZE = 512;
 
-int main() {
+/**
+/**
+ * @brief Copies data from standard input to the Windows clipboard.
+ *
+ * This function reads data from standard input, stores it in a global buffer, and sets the content
+ * of the Windows clipboard to this data.
+ *
+ * @return int Returns 0 on success, or the last error code on failure.
+ */
+int pbcopy_main() {
     if (!isatty(fileno(stdin))) {
         // Read stdin to a global buffer
         size_t len = 0;
