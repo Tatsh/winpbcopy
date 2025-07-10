@@ -16,6 +16,7 @@ dcmake
 dcoverage
 docstrings
 doxyfile
+endforeach
 esbenp
 gcov
 geninfo
@@ -26,12 +27,15 @@ gnucc
 gnucxx
 googletest
 gtest
+haximus
 hglobal
 htmlcov
 interprocedural
+isatty
 iwyu
 jsonnet
 jsonschema
+libcmocka
 libjsonnet
 libname
 mainpage
@@ -48,6 +52,7 @@ pyyaml
 qstringbuilder
 reflow
 schemafile
+softprops
 srcs
 strequal
 tatsh
@@ -74,4 +79,6 @@ wuninitialized
 wunknown
 wunreachable
 wunused
+wyri
 yarnpip
+zeroinit

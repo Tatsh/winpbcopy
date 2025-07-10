@@ -2,16 +2,17 @@
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 #include <cmocka.h>
 
-int __wrap_isatty(int fd) {
-    return mock_type(int);
-}
+extern int pbcopy_main();
+extern int pbpaste_main();
 
-int __wrap_fileno(FILE *stream) {
-    check_expected_ptr(stream);
+int __wrap_isatty(int fd) {
+    (void)fd;
     return mock_type(int);
 }
 
@@ -21,9 +22,12 @@ void *__wrap_GlobalAlloc(unsigned int uFlags, size_t dwBytes) {
     return mock_type(void *);
 }
 
-void *__wrap_GlobalLock(void *hMem) {
+static const size_t BUF_SIZE = 10 * 1024 * 1024;
+wchar_t *_shared_mem = nullptr;
+
+wchar_t *__wrap_GlobalLock(void *hMem) {
     check_expected_ptr(hMem);
-    return mock_type(void *);
+    return mock_type(wchar_t *);
 }
 
 void __wrap_GlobalUnlock(void *hMem) {
@@ -35,7 +39,7 @@ void __wrap_GlobalFree(void *hMem) {
 }
 
 int __wrap_OpenClipboard(void *hWndNewOwner) {
-    check_expected_ptr(hWndNewOwner);
+    (void)hWndNewOwner;
     return mock_type(int);
 }
 
@@ -56,20 +60,8 @@ void *__wrap_SetClipboardData(unsigned int uFormat, void *hMem) {
     return mock_type(void *);
 }
 
-int __wrap_fprintf(FILE *stream, const char *format, ...) {
-    check_expected_ptr(stream);
-    check_expected_ptr(format);
-
-    va_list args;
-    va_start(args, format);
-    int ret = mock_type(int);
-    va_end(args);
-
-    return ret;
-}
-
 void __wrap_Sleep(unsigned int ms) {
-    check_expected(ms);
+    (void)ms;
 }
 
 unsigned long __wrap_GetLastError(void) {
@@ -85,48 +77,36 @@ void *__wrap_GetClipboardData(unsigned int uFormat) {
     return mock_type(void *);
 }
 
-int __wrap_printf(const char *format, ...) {
-    check_expected_ptr(format);
-
-    va_list args;
-    va_start(args, format);
-    int ret = mock_type(int);
-    va_end(args);
-
-    return ret;
-}
-
-static void test_main_success(void **state) {
+static void test_pbcopy_success(void **state) {
     (void)state;
-    char *argv[] = {"pbcopy", NULL};
-    int argc = 1;
 
     // Mock isatty to return 0 (not a tty)
     will_return(__wrap_isatty, 0);
 
-    // Mock fileno to return 0 (stdin)
-    expect_any(__wrap_fileno, stream);
-    will_return(__wrap_fileno, 0);
-
     // Mock read to simulate reading "hello\n" from stdin
-    char input[] = "hello\n";
+    _shared_mem = malloc(BUF_SIZE * sizeof(wchar_t));
+    memset(_shared_mem, 0, BUF_SIZE * sizeof(wchar_t));
+    _shared_mem[0] = L'h';
+    _shared_mem[1] = L'e';
+    _shared_mem[2] = L'l';
+    _shared_mem[3] = L'l';
+    _shared_mem[4] = L'o';
+    _shared_mem[5] = L'\n';
     expect_value(__wrap_read, fd, 0);
     expect_any(__wrap_read, buf);
-    expect_value(__wrap_read, count, sizeof(input) - 1);
-    will_return(__wrap_read, sizeof(input) - 1);
+    expect_value(__wrap_read, count, 0x800);
+    will_return(__wrap_read, 0x2800000);
 
     // Mock GlobalAlloc, GlobalLock, and GlobalUnlock
-    expect_value(__wrap_GlobalAlloc, uFlags, 0);
-    expect_value(__wrap_GlobalAlloc, dwBytes, sizeof(input));
+    expect_value(__wrap_GlobalAlloc, uFlags, 0x42);
+    expect_value(__wrap_GlobalAlloc, dwBytes, 0x2800000);
     will_return(__wrap_GlobalAlloc, (void *)0x1234);
 
     expect_any(__wrap_GlobalLock, hMem);
-    will_return(__wrap_GlobalLock, input);
+    will_return(__wrap_GlobalLock, _shared_mem);
 
     expect_any(__wrap_GlobalUnlock, hMem);
 
-    // Mock OpenClipboard, EmptyClipboard, SetClipboardData, CloseClipboard
-    expect_any(__wrap_OpenClipboard, hWndNewOwner);
     will_return(__wrap_OpenClipboard, 1);
 
     will_return(__wrap_EmptyClipboard, 1);
@@ -137,60 +117,141 @@ static void test_main_success(void **state) {
 
     will_return(__wrap_CloseClipboard, 1);
 
-    // Mock GlobalFree
     expect_any(__wrap_GlobalFree, hMem);
 
-    // Mock printf for success message
-    expect_any(__wrap_printf, format);
-    will_return(__wrap_printf, 0);
-
-    int ret = main(argc, argv);
+    int ret = pbcopy_main();
     assert_int_equal(ret, 0);
+
+    free(_shared_mem);
+    _shared_mem = nullptr;
 }
 
-static void test_main_clipboard_fail(void **state) {
+static void test_pbcopy_clipboard_fail(void **state) {
     (void)state;
-    char *argv[] = {"pbcopy", NULL};
-    int argc = 1;
 
     will_return(__wrap_isatty, 0);
-    expect_any(__wrap_fileno, stream);
-    will_return(__wrap_fileno, 0);
 
-    char input[] = "fail\n";
+    _shared_mem = malloc(BUF_SIZE * sizeof(wchar_t));
+    memset(_shared_mem, 0, BUF_SIZE * sizeof(wchar_t));
+    _shared_mem[0] = L'f';
+    _shared_mem[1] = L'a';
+    _shared_mem[2] = L'i';
+    _shared_mem[3] = L'l';
+    _shared_mem[5] = L'\n';
     expect_value(__wrap_read, fd, 0);
     expect_any(__wrap_read, buf);
-    expect_value(__wrap_read, count, sizeof(input) - 1);
-    will_return(__wrap_read, sizeof(input) - 1);
+    expect_value(__wrap_read, count, 0x800);
+    will_return(__wrap_read, 0x2800000);
 
-    expect_value(__wrap_GlobalAlloc, uFlags, 0);
-    expect_value(__wrap_GlobalAlloc, dwBytes, sizeof(input));
+    expect_value(__wrap_GlobalAlloc, uFlags, 0x42);
+    expect_value(__wrap_GlobalAlloc, dwBytes, 0x2800000);
     will_return(__wrap_GlobalAlloc, (void *)0x1234);
 
     expect_any(__wrap_GlobalLock, hMem);
-    will_return(__wrap_GlobalLock, input);
+    will_return(__wrap_GlobalLock, _shared_mem);
 
     expect_any(__wrap_GlobalUnlock, hMem);
 
-    expect_any(__wrap_OpenClipboard, hWndNewOwner);
-    will_return(__wrap_OpenClipboard, 0); // Simulate failure
+    will_return_always(__wrap_OpenClipboard, 0);
 
-    // Mock fprintf for error message
-    expect_any(__wrap_fprintf, stream);
-    expect_any(__wrap_fprintf, format);
-    will_return(__wrap_fprintf, 0);
+    will_return_always(__wrap_GetLastError, 1234);
 
-    // Mock GlobalFree
     expect_any(__wrap_GlobalFree, hMem);
 
-    int ret = main(argc, argv);
+    int ret = pbcopy_main();
+    assert_int_not_equal(ret, 0);
+
+    free(_shared_mem);
+    _shared_mem = nullptr;
+}
+
+static void test_pbcopy_set_clipboard_data_fail(void **state) {
+    (void)state;
+
+    // Mock isatty to return 0 (not a tty)
+    will_return(__wrap_isatty, 0);
+
+    // Mock read to simulate reading "hello\n" from stdin
+    _shared_mem = malloc(BUF_SIZE * sizeof(wchar_t));
+    memset(_shared_mem, 0, BUF_SIZE * sizeof(wchar_t));
+    _shared_mem[0] = L'h';
+    _shared_mem[1] = L'e';
+    _shared_mem[2] = L'l';
+    _shared_mem[3] = L'l';
+    _shared_mem[4] = L'o';
+    _shared_mem[5] = L'\n';
+    expect_value(__wrap_read, fd, 0);
+    expect_any(__wrap_read, buf);
+    expect_value(__wrap_read, count, 0x800);
+    will_return(__wrap_read, 0x2800000);
+
+    // Mock GlobalAlloc, GlobalLock, and GlobalUnlock
+    expect_value(__wrap_GlobalAlloc, uFlags, 0x42);
+    expect_value(__wrap_GlobalAlloc, dwBytes, 0x2800000);
+    will_return(__wrap_GlobalAlloc, (void *)0x1234);
+
+    expect_any(__wrap_GlobalLock, hMem);
+    will_return(__wrap_GlobalLock, _shared_mem);
+
+    expect_any(__wrap_GlobalUnlock, hMem);
+
+    will_return(__wrap_OpenClipboard, 1);
+
+    will_return(__wrap_EmptyClipboard, 1);
+
+    expect_value(__wrap_SetClipboardData, uFormat, 1);
+    expect_any(__wrap_SetClipboardData, hMem);
+    will_return(__wrap_SetClipboardData, (void *)0);
+
+    will_return_always(__wrap_GetLastError, 1234);
+
+    expect_any(__wrap_GlobalFree, hMem);
+
+    int ret = pbcopy_main();
+    assert_int_not_equal(ret, 0);
+
+    free(_shared_mem);
+    _shared_mem = nullptr;
+}
+
+static char _test_clipboard_data[32];
+
+static void test_pbpaste_success(void **state) {
+    (void)state;
+
+    will_return(__wrap_OpenClipboard, 1);
+
+    _test_clipboard_data[0] = 'H';
+    _test_clipboard_data[1] = 'i';
+    _test_clipboard_data[3] = '\0';
+
+    expect_value(__wrap_GetClipboardData, uFormat, 1);
+    will_return(__wrap_GetClipboardData, _test_clipboard_data);
+
+    will_return(__wrap_CloseClipboard, 1);
+
+    int ret = pbpaste_main();
+    assert_int_equal(ret, 0);
+}
+
+static void test_pbpaste_clipboard_fail(void **state) {
+    (void)state;
+
+    will_return(__wrap_OpenClipboard, 0);
+
+    will_return(__wrap_GetLastError, 5678);
+
+    int ret = pbpaste_main();
     assert_int_not_equal(ret, 0);
 }
 
 int main(void) {
     const struct CMUnitTest tests[] = {
-        cmocka_unit_test(test_main_success),
-        cmocka_unit_test(test_main_clipboard_fail),
+        cmocka_unit_test(test_pbcopy_success),
+        cmocka_unit_test(test_pbcopy_clipboard_fail),
+        cmocka_unit_test(test_pbcopy_set_clipboard_data_fail),
+        cmocka_unit_test(test_pbpaste_success),
+        cmocka_unit_test(test_pbpaste_clipboard_fail),
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests(tests, nullptr, nullptr);
 }

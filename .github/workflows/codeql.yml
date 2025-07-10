@@ -13,6 +13,12 @@ jobs:
         uses: 'github/codeql-action/init@v3'
         with:
           languages: '${{ matrix.language }}'
+      - name: Install dependencies
+        run: sudo apt-get install -y lcov libcmocka-dev
+      - name: Build
+        run: |
+          cmake -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -B ${{github.workspace}}/build -DBUILD_TESTS=ON
+          cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} --verbose
       - name: 'Perform CodeQL Analysis'
         uses: 'github/codeql-action/analyze@v3'
         with:
@@ -22,6 +28,7 @@ jobs:
       matrix:
         language:
           - 'cpp'
+        build-type: [Debug, Release]
 name: 'CodeQL'
 'on':
   pull_request:

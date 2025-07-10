@@ -1,6 +1,8 @@
-cmake_minimum_required(VERSION 3.26 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.31)
 project(winpbcopy VERSION 0.0.2)
 include(GNUInstallDirs)
+
+option(BUILD_TESTS "Build tests." OFF)
 
 set(GCC_CLANG_SHARED_C_FLAGS "-fno-builtin;-std=gnu2x")
 set(GCC_CLANG_DEBUG_C_FLAGS
@@ -36,20 +38,4 @@ set(GCC_CLANG_DEBUG_C_FLAGS
 -Wunused-value;\
 -Wunused-variable")
 
-add_executable(pbcopy pbcopy.c)
-add_executable(pbpaste pbpaste.c)
-if(CMAKE_COMPILER_IS_GNUCC OR ${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
-  target_compile_options(pbcopy PRIVATE ${GCC_CLANG_SHARED_C_FLAGS}
-                                        $<$<CONFIG:Debug>:${GCC_CLANG_DEBUG_C_FLAGS}>)
-  target_compile_options(pbpaste PRIVATE ${GCC_CLANG_SHARED_C_FLAGS}
-                                         $<$<CONFIG:Debug>:${GCC_CLANG_DEBUG_C_FLAGS}>)
-elseif(MSVC)
-  # Disable warnings about secure CRT, but still enable compatible signature versions
-  # http://stackoverflow.com/a/119752/374110
-  target_compile_definitions(pbcopy PRIVATE _CRT_SECURE_NO_WARNINGS nullptr=NULL)
-  target_compile_definitions(pbpaste PRIVATE _CRT_SECURE_NO_WARNINGS nullptr=NULL)
-endif()
-install(TARGETS pbcopy pbpaste RUNTIME)
-install(FILES man/pbcopy.1 man/pbpaste.1 TYPE MAN)
-set(CPACK_GENERATOR "NSIS;ZIP")
-include(CPack)
+add_subdirectory(src)
