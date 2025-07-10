@@ -66,6 +66,7 @@ wdeprecated
 wempty
 werror
 wextra
+wineg
 winegcc
 winpbcopy
 wiswa

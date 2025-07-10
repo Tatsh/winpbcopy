@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.31)
-project(winpbcopy VERSION 0.0.2)
+project(winpbcopy VERSION 0.0.3)
 include(GNUInstallDirs)
 
 option(BUILD_TESTS "Build tests." OFF)
 
-set(GCC_CLANG_SHARED_C_FLAGS "-fno-builtin;-std=gnu2x")
+set(CMAKE_C_STANDARD 23)
+set(GCC_CLANG_SHARED_C_FLAGS "-fno-builtin")
 set(GCC_CLANG_DEBUG_C_FLAGS
     "-ggdb;\
 -O0;\

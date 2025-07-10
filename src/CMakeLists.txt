@@ -1,4 +1,6 @@
-if(WIN32 OR MINGW)
+if(WIN32
+   OR MINGW
+   OR CMAKE_C_COMPILER MATCHES "winegcc")
   set(EXECS pbcopy pbpaste)
   foreach(exe ${EXECS})
     add_executable(${exe} ${exe}_main.c ${exe}.c)

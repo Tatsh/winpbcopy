@@ -16,7 +16,7 @@ local utils = import 'utils.libjsonnet';
     },
   ],
   project_name: 'winpbcopy',
-  version: '0.0.2',
+  version: '0.0.3',
   description: 'pbcopy/paste for Windows.',
   keywords: ['kate', 'kde', 'plasma', 'wakatime'],
   want_main: false,

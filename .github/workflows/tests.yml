@@ -13,7 +13,8 @@ jobs:
       - name: Configure
         run: >-
           cmake -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -B ${{github.workspace}}/build
-          --install-prefix ${{github.workspace}}/build/prefix -DBUILD_TESTS=ON
+          --install-prefix ${{github.workspace}}/build/prefix
+          -DBUILD_TESTS=ON
       - name: Build
         run: cmake --build ${{github.workspace}}/build --verbose --config ${{matrix.build-type}}
       - name: Install
