@@ -3,6 +3,7 @@
 #define isatty _isatty
 #define read _read
 #endif
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #if defined(__WINE__) || defined(__GNUC__)
@@ -13,14 +14,15 @@
 #include <BaseTsd.h>
 typedef SIZE_T size_t;
 #endif
-#ifndef TESTING
+#ifdef _WIN32
 #include <windows.h>
+#else
+#include "decls.h"
 #endif
 
 static const size_t BUF_SIZE = 10 * 1024 * 1024;
 static const size_t READ_SIZE = 512;
 
-/**
 /**
  * @brief Copies data from standard input to the Windows clipboard.
  *
