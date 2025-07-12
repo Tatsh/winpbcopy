@@ -18,7 +18,7 @@ local utils = import 'utils.libjsonnet';
   project_name: 'winpbcopy',
   version: '0.0.3',
   description: 'pbcopy/paste for Windows.',
-  keywords: ['kate', 'kde', 'plasma', 'wakatime'],
+  keywords: ['clipboard', 'console', 'terminal', 'windows'],
   want_main: false,
   copilot: {
     intro: "winpbcopy simulates macOS' pbcopy/pbpaste commands.",
