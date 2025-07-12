@@ -6,6 +6,7 @@
 #else
 #include "decls.h"
 #endif
+#include "macros.h"
 
 /**
  * @brief Prints the content of the Windows clipboard to standard output.
@@ -27,5 +28,7 @@ int pbpaste_main() {
             return 0;
         }
     }
-    return GetLastError();
+    DWORD last_error = GetLastError();
+    fprintf(stderr, "Error occurred: 0x%lx.\n", last_error);
+    return last_error;
 }

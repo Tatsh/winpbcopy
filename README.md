@@ -18,23 +18,46 @@ An equivalent of macOS' `pbcopy` and `pbpaste` commands.
 
 ## How to build
 
-### Linux
-
-Only tests can be run on Linux unless you build using `CC=winegcc CXX=wineg++`.
-
-### MSYS2
-
 Requirements:
 
-- `cmake`
-- `mingw64/mingw-w64-x86_64-gcc`
-- `make` or `ninja`
+- CMake
+- MSVC or MinGW
+
+Tests require [CMocka](https://cmocka.org/). Coverage reporting requires using GCC.
+
+### Linux
+
+Tests can be run natively on Linux if you have CMocka installed. Pass `-DBUILD_TESTS=ON` to CMake.
+Example:
 
 ```shell
 mkdir build
 cd build
-cmake ..
-make
+cmake -G Ninja -DBUILD_TESTS=ON ..
+ninja -v
+ctest --test-dir src
+```
+
+#### Cross-compilation with MinGW
+
+Example:
+
+```shell
+mkdir build
+cd build
+cmake -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ ..
+ninja -v
+```
+
+### MSYS2
+
+Example:
+
+```shell
+mkdir build
+cd build
+cmake -G Ninja ..
+ninja
 ```
 
 ## Installation

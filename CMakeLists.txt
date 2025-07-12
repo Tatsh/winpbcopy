@@ -1,42 +1,46 @@
+include(CheckTypeSize)
+include(CheckSymbolExists)
+
 cmake_minimum_required(VERSION 3.31)
-project(winpbcopy VERSION 0.0.3)
+project(
+  winpbcopy
+  DESCRIPTION "pbcopy/paste for Windows."
+  HOMEPAGE_URL "https://github.com/Tatsh/winpbcopy"
+  VERSION 0.0.3)
 include(GNUInstallDirs)
 
-option(BUILD_TESTS "Build tests." OFF)
+if((CMAKE_C_COMPILER_ID STREQUAL "MSVC" AND CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL 19.37.0.0
+   )
+   OR CMAKE_COMPILER_IS_GNUCC
+   OR CMAKE_C_COMPILER_ID MATCHES "Clang"
+   OR CMAKE_C_COMPILER MATCHES "/winegcc$")
+  set(CMAKE_C_STANDARD 23)
+endif()
 
-set(CMAKE_C_STANDARD 23)
-set(GCC_CLANG_SHARED_C_FLAGS "-fno-builtin")
-set(GCC_CLANG_DEBUG_C_FLAGS
-    "-ggdb;\
--O0;\
--pedantic;\
--Wall;\
--Wdeprecated-declarations;\
--Wempty-body;\
--Werror;\
--Werror=float-conversion;\
--Werror=implicit-function-declaration;\
--Werror=incompatible-pointer-types;\
--Werror=int-conversion;\
--Werror=return-type;\
--Wmissing-braces;\
--Wmissing-field-initializers;\
--Wno-missing-prototypes;\
--Wno-strict-prototypes;\
--Wno-trigraphs;\
--Wno-unknown-pragmas;\
--Wparentheses;\
--Wpointer-sign;\
--Wshadow;\
--Wsign-compare;\
--Wswitch;\
--Wuninitialized;\
--Wunknown-pragmas;\
--Wunreachable-code;\
--Wunused-function;\
--Wunused-label;\
--Wunused-parameter;\
--Wunused-value;\
--Wunused-variable")
+option(BUILD_TESTS "Build tests." OFF)
+option(ENABLE_ASAN "Enable address sanitiser." OFF)
+option(ENABLE_COVERAGE "Link tests with gcov." OFF)
+option(ENABLE_UBSAN "Enable undefined behaviour sanitiser." OFF)
+if(MSVC)
+  set(TARGET_VERSION
+      0x600
+      CACHE STRING "Target Windows version in 0xMMNN format.")
+else()
+  set(TARGET_VERSION 0x501)
+endif()
+
+if(BUILD_TESTS)
+  find_package(cmocka REQUIRED)
+endif()
+
+if(NOT MSVC)
+  set(CMAKE_REQUIRED_FLAGS "-std=gnu2x")
+endif()
+set(CMAKE_REQUIRED_DEFINITIONS -D_WIN32_WINNT=${TARGET_VERSION} -DUNICODE -D_UNICODE)
+check_type_size(_Bool STDBOOL BUILTIN_TYPES_ONLY LANGUAGE C)
+check_type_size(nullptr_t STD_NULLPTR_T BUILTIN_TYPES_ONLY LANGUAGE C)
+add_compile_definitions(
+  _CRT_SECURE_NO_WARNINGS _UNICODE HAVE_NULLPTR_T=$<IF:$<BOOL:${HAVE_STD_NULLPTR_T}>,1,0>
+  HAVE_STDBOOL=$<IF:$<BOOL:${HAVE_STDBOOL}>,1,0> UNICODE WIN32_LEAN_AND_MEAN)
 
 add_subdirectory(src)

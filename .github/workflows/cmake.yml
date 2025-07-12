@@ -8,7 +8,8 @@ jobs:
       - id: fixed_workspace
         name: Fix path (Windows)
         run: |
-          echo out=$("${{github.workspace}}" -Replace "\\","/") | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          echo out=$("${{github.workspace}}" -Replace "\\","/") |
+          Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -40,7 +41,9 @@ jobs:
         with:
           fetch-depth: 0
       - name: Configure
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_VERBOSE_MAKEFILE=ON --install-prefix ${{github.workspace}}/build/prefix
+        run: |
+          cmake -B ${{github.workspace}}/build -DCMAKE_VERBOSE_MAKEFILE=ON
+          --install-prefix ${{github.workspace}}/build/prefix
       - name: Build
         run: cmake --build ${{github.workspace}}/build --config Debug
 name: Build

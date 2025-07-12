@@ -8,6 +8,8 @@
 
 #include <cmocka.h>
 
+#include "macros.h"
+
 extern int pbcopy_main();
 extern int pbpaste_main();
 
@@ -23,11 +25,11 @@ void *__wrap_GlobalAlloc(unsigned int uFlags, size_t dwBytes) {
 }
 
 static const size_t BUF_SIZE = 10 * 1024 * 1024;
-wchar_t *_shared_mem = nullptr;
+char *_shared_mem = nullptr;
 
-wchar_t *__wrap_GlobalLock(void *hMem) {
+char *__wrap_GlobalLock(void *hMem) {
     check_expected_ptr(hMem);
-    return mock_type(wchar_t *);
+    return mock_type(char *);
 }
 
 void __wrap_GlobalUnlock(void *hMem) {
@@ -94,12 +96,12 @@ static void test_pbcopy_success(void **state) {
     _shared_mem[5] = L'\n';
     expect_value(__wrap_read, fd, 0);
     expect_any(__wrap_read, buf);
-    expect_value(__wrap_read, count, 0x800);
-    will_return(__wrap_read, 0x2800000);
+    expect_value(__wrap_read, count, 0x200);
+    will_return(__wrap_read, 0xa00000);
 
     // Mock GlobalAlloc, GlobalLock, and GlobalUnlock
     expect_value(__wrap_GlobalAlloc, uFlags, 0x42);
-    expect_value(__wrap_GlobalAlloc, dwBytes, 0x2800000);
+    expect_value(__wrap_GlobalAlloc, dwBytes, 0xa00000);
     will_return(__wrap_GlobalAlloc, (void *)0x1234);
 
     expect_any(__wrap_GlobalLock, hMem);
@@ -140,11 +142,11 @@ static void test_pbcopy_clipboard_fail(void **state) {
     _shared_mem[5] = L'\n';
     expect_value(__wrap_read, fd, 0);
     expect_any(__wrap_read, buf);
-    expect_value(__wrap_read, count, 0x800);
-    will_return(__wrap_read, 0x2800000);
+    expect_value(__wrap_read, count, 0x200);
+    will_return(__wrap_read, 0xa00000);
 
     expect_value(__wrap_GlobalAlloc, uFlags, 0x42);
-    expect_value(__wrap_GlobalAlloc, dwBytes, 0x2800000);
+    expect_value(__wrap_GlobalAlloc, dwBytes, 0xa00000);
     will_return(__wrap_GlobalAlloc, (void *)0x1234);
 
     expect_any(__wrap_GlobalLock, hMem);
@@ -182,12 +184,12 @@ static void test_pbcopy_set_clipboard_data_fail(void **state) {
     _shared_mem[5] = L'\n';
     expect_value(__wrap_read, fd, 0);
     expect_any(__wrap_read, buf);
-    expect_value(__wrap_read, count, 0x800);
-    will_return(__wrap_read, 0x2800000);
+    expect_value(__wrap_read, count, 0x200);
+    will_return(__wrap_read, 0xa00000);
 
     // Mock GlobalAlloc, GlobalLock, and GlobalUnlock
     expect_value(__wrap_GlobalAlloc, uFlags, 0x42);
-    expect_value(__wrap_GlobalAlloc, dwBytes, 0x2800000);
+    expect_value(__wrap_GlobalAlloc, dwBytes, 0xa00000);
     will_return(__wrap_GlobalAlloc, (void *)0x1234);
 
     expect_any(__wrap_GlobalLock, hMem);

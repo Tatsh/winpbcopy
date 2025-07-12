@@ -1,16 +1,15 @@
 #ifndef WINPBCOPY_DECLS_H
 #define WINPBCOPY_DECLS_H
 
-#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
-typedef wchar_t WCHAR;
-typedef WCHAR *LPTSTR;
-
-typedef bool BOOL;
 typedef uint32_t DWORD;
 typedef void *HGLOBAL;
+
+#define CF_TEXT 1
+#define GMEM_MOVEABLE 0x0002
+#define GMEM_ZEROINIT 0x0040
 
 void *GlobalAlloc(unsigned int uFlags, size_t dwBytes);
 void *GlobalLock(void *hMem);

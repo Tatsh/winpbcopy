@@ -15,7 +15,13 @@
     "editor.tabSize": 4
   },
   "cSpell.enabled": true,
-  "cmake.configureArgs": ["-DBUILD_TESTS=ON"],
+  "cmake.configureArgs": [
+    "-DBUILD_TESTS=ON",
+    "-DCMAKE_BUILD_TYPE=Debug",
+    "-DCMAKE_VERBOSE_MAKEFILE=ON",
+    "-DENABLE_ASAN=ON",
+    "-DENABLE_UBSAN=ON"
+  ],
   "editor.codeActionsOnSave": {
     "source.fixAll": "always"
   },
@@ -27,11 +33,6 @@
   "editor.rulers": [100],
   "editor.tabSize": 2,
   "editor.wordWrapColumn": 100,
-  "files.associations": {
-    "*.rh": "c",
-    "__config": "c",
-    "windows.h": "c"
-  },
   "files.eol": "\n",
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,

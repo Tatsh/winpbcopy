@@ -4,14 +4,6 @@
       "cStandard": "c23",
       "compilerPath": "/usr/bin/gcc",
       "cppStandard": "c++23",
-      "defines": [
-        "VERSION=\"unknown\"",
-        "CF_TEXT=1",
-        "GMEM_MOVEABLE=0x0002",
-        "GMEM_ZEROINIT=0x0040",
-        "FALSE=0",
-        "TRUE=1"
-      ],
       "includePath": [
         "${workspaceFolder}/src/**",
         "${workspaceFolder}/build/generated",
@@ -23,7 +15,6 @@
       "cStandard": "c23",
       "compilerPath": "/usr/bin/winegcc-staging-10.10",
       "cppStandard": "c++23",
-      "defines": ["VERSION=\"unknown\""],
       "includePath": ["${workspaceFolder}/src/**", "/usr/include/wine-staging-10.10/wine/windows"],
       "name": "Wine"
     }
