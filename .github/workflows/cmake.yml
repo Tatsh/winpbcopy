@@ -34,18 +34,82 @@ jobs:
             ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.exe
             ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.zip
           tag_name: ${{ steps.latest_tag.outputs.tag }}
-  pedantic:
-    runs-on: windows-latest
+  build_cross:
+    runs-on: ubuntu-latest
     steps:
+      - name: Set up MinGW
+        uses: egor-tensin/setup-mingw@v2
+        with:
+          platform: x64
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Configure
-        run: |
-          cmake -B ${{github.workspace}}/build -DCMAKE_VERBOSE_MAKEFILE=ON
-          --install-prefix ${{github.workspace}}/build/prefix
+        run: >-
+          cmake -B ${{github.workspace}}/build
+          -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
+          -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc
+          -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=${{matrix.lto}}
       - name: Build
-        run: cmake --build ${{github.workspace}}/build --config Debug
+        run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} --verbose
+    strategy:
+      fail-fast: false
+      matrix:
+        build-type: [Debug, Release]
+        lto: ['FALSE', 'TRUE']
+  build_msys:
+    runs-on: windows-latest
+    steps:
+      - id: fixed_workspace
+        name: Fix path
+        run: >-
+          echo out=$("${{github.workspace}}" -Replace "\\","/") | Out-File
+          -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+      - uses: msys2/setup-msys2@v2
+        with:
+          install: >-
+            make
+          msystem: ${{matrix.sys.name}}
+          pacboy: >-
+            cmake:p
+            ninja:p
+            toolchain:p
+          update: true
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Configure
+        run: >-
+          cmake -G Ninja -B ${{steps.fixed_workspace.outputs.out}}/build
+          --install-prefix ${{steps.fixed_workspace.outputs.out}}/build/prefix
+          -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
+        shell: msys2 {0}
+      - name: Build
+        run: cmake --build ${{steps.fixed_workspace.outputs.out}}/build --verbose
+        shell: msys2 {0}
+      - name: Install
+        run: >-
+          cmake --install ${{steps.fixed_workspace.outputs.out}}/build
+          --config ${{matrix.build-type}} --verbose
+        shell: msys2 {0}
+      - name: Package
+        run: >-
+          cpack -C ${{matrix.build-type}}
+          --config ${{steps.fixed_workspace.outputs.out}}/build/CPackConfig.cmake --verbose
+        shell: msys2 {0}
+    strategy:
+      fail-fast: false
+      matrix:
+        build-type: [Debug, Release]
+        sys:
+          - env: clang-x86_64
+            name: clang64
+          - env: i686
+            name: mingw32
+          - env: x86_64
+            name: mingw64
+          - env: ucrt-x86_64
+            name: ucrt64
 name: Build
 'on':
   pull_request:
