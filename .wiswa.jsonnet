@@ -3,6 +3,7 @@ local utils = import 'utils.libjsonnet';
 (import 'defaults.libjsonnet') + {
   local top = self,
   // General settings
+  project_type: 'c',
 
   // Shared
   github_username: 'Tatsh',
@@ -37,13 +38,10 @@ local utils = import 'utils.libjsonnet';
   },
 
   // C++ only
-  cmake+: {
-  },
-  project_type: 'c',
   vcpkg+: {
     dependencies: [{
-      name: 'ecm',
-      'version>=': '6.7.0',
+      name: 'cmocka',
+      platform: 'linux|mingw',
     }],
   },
 }

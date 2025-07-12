@@ -9,7 +9,7 @@
   "documentation": "https://winpbcopy.readthedocs.org",
   "homepage": "https://tatsh.github.io/winpbcopy/",
   "license": "MIT",
-  "maintainers": "Andrew Udvare <audvare@gmail.com>",
+  "maintainers": ["Andrew Udvare <audvare@gmail.com>"],
   "name": "winpbcopy",
   "version": "0.0.3"
 }

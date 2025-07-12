@@ -47,7 +47,7 @@
   },
   "files": ["LICENSE.txt", "README.md"],
   "homepage": "https://tatsh.github.io/winpbcopy/",
-  "keywords": ["kate", "kde", "plasma", "wakatime"],
+  "keywords": ["clipboard", "console", "terminal", "windows"],
   "license": "MIT",
   "markdownlint-cli2": {
     "config": {
@@ -98,9 +98,9 @@
   },
   "scripts": {
     "build": "cmake --preset=default -DBUILD_DOCS=ON && cmake --build build",
-    "check-formatting": "cmake-format --check CMakeLists.txt src/CMakeLists.txt && clang-format -n src/*.c && prettier -c . && markdownlint-cli2 '**/*.md' '#node_modules'",
+    "check-formatting": "cmake-format --check CMakeLists.txt src/CMakeLists.txt && clang-format -n src/*.c src/*.h && prettier -c . && markdownlint-cli2 '**/*.md' '#node_modules'",
     "check-spelling": "cspell --no-progress .",
-    "format": "cmake-format -i CMakeLists.txt src/CMakeLists.txt && clang-format -i src/*.c && yarn prettier -w .",
+    "format": "cmake-format -i CMakeLists.txt src/CMakeLists.txt && clang-format -i src/*.c src/*.h && yarn prettier -w .",
     "qa": "yarn check-spelling && yarn check-formatting"
   },
   "version": "0.0.3"

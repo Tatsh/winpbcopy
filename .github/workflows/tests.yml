@@ -61,7 +61,9 @@ name: Tests
 'on':
   pull_request:
     branches:
-      - master
+      - 'master'
   push:
     branches:
-      - master
+      - 'master'
+permissions:
+  contents: 'read'

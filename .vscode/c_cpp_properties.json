@@ -10,13 +10,6 @@
         "/usr/include/wine-staging-10.10/wine/windows"
       ],
       "name": "Linux"
-    },
-    {
-      "cStandard": "c23",
-      "compilerPath": "/usr/bin/winegcc-staging-10.10",
-      "cppStandard": "c++23",
-      "includePath": ["${workspaceFolder}/src/**", "/usr/include/wine-staging-10.10/wine/windows"],
-      "name": "Wine"
     }
   ],
   "version": 4
