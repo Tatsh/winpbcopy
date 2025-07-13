@@ -2,7 +2,7 @@
 
 [![GitHub tag (with filter)](https://img.shields.io/github/v/tag/Tatsh/winpbcopy)](https://github.com/Tatsh/winpbcopy/tags)
 [![License](https://img.shields.io/github/license/Tatsh/winpbcopy)](https://github.com/Tatsh/winpbcopy/blob/master/LICENSE.txt)
-[![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/winpbcopy/v0.0.3/master)](https://github.com/Tatsh/winpbcopy/compare/v0.0.3...master)
+[![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/winpbcopy/v0.0.4/master)](https://github.com/Tatsh/winpbcopy/compare/v0.0.4...master)
 [![CodeQL](https://github.com/Tatsh/winpbcopy/actions/workflows/codeql.yml/badge.svg)](https://github.com/Tatsh/winpbcopy/actions/workflows/codeql.yml)
 [![QA](https://github.com/Tatsh/winpbcopy/actions/workflows/qa.yml/badge.svg)](https://github.com/Tatsh/winpbcopy/actions/workflows/qa.yml)
 [![Tests](https://github.com/Tatsh/winpbcopy/actions/workflows/tests.yml/badge.svg)](https://github.com/Tatsh/winpbcopy/actions/workflows/tests.yml)

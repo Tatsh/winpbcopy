@@ -6,7 +6,7 @@ project(
   winpbcopy
   DESCRIPTION "pbcopy/paste for Windows."
   HOMEPAGE_URL "https://github.com/Tatsh/winpbcopy"
-  VERSION 0.0.3)
+  VERSION 0.0.4)
 include(GNUInstallDirs)
 
 if((CMAKE_C_COMPILER_ID STREQUAL "MSVC" AND CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL 19.37.0.0
