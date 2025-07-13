@@ -1,5 +1,5 @@
+include(CheckCSourceCompiles)
 include(CheckTypeSize)
-include(CheckSymbolExists)
 
 cmake_minimum_required(VERSION 3.31)
 project(
@@ -33,14 +33,17 @@ if(BUILD_TESTS)
   find_package(cmocka REQUIRED)
 endif()
 
-if(NOT MSVC)
-  set(CMAKE_REQUIRED_FLAGS "-std=gnu2x")
-endif()
 set(CMAKE_REQUIRED_DEFINITIONS -D_WIN32_WINNT=${TARGET_VERSION} -DUNICODE -D_UNICODE)
 check_type_size(_Bool STDBOOL BUILTIN_TYPES_ONLY LANGUAGE C)
-check_type_size(nullptr_t STD_NULLPTR_T BUILTIN_TYPES_ONLY LANGUAGE C)
+check_c_source_compiles(
+  "#include <stdlib.h>
+int main(void) {
+  free(nullptr);
+  return 0;
+}"
+  HAVE_NULLPTR_KEYWORD)
 add_compile_definitions(
-  _CRT_SECURE_NO_WARNINGS _UNICODE HAVE_NULLPTR_T=$<IF:$<BOOL:${HAVE_STD_NULLPTR_T}>,1,0>
+  _CRT_SECURE_NO_WARNINGS _UNICODE HAVE_NULLPTR_T=$<IF:$<BOOL:${HAVE_NULLPTR_KEYWORD}>,1,0>
   HAVE_STDBOOL=$<IF:$<BOOL:${HAVE_STDBOOL}>,1,0> UNICODE WIN32_LEAN_AND_MEAN)
 
 add_subdirectory(src)

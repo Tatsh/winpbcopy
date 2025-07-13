@@ -60,6 +60,7 @@ rpath
 schemafile
 softprops
 stdbool
+stdlib
 strequal
 tatsh
 tensin
