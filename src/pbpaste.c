@@ -29,6 +29,6 @@ int pbpaste_main() {
         }
     }
     DWORD last_error = GetLastError();
-    fprintf(stderr, "Error occurred: 0x%lx.\n", last_error);
+    fprintf(stderr, "Error occurred: 0x%x.\n", (unsigned int)last_error);
     return last_error;
 }

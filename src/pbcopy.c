@@ -62,10 +62,10 @@ int pbcopy_main() {
                 break;
             }
             fprintf(stderr,
-                    "OpenClipboard() failed, attempt %d of %d: 0x%lx.\n",
+                    "OpenClipboard() failed, attempt %d of %d: 0x%x.\n",
                     attempts + 1,
                     max,
-                    GetLastError());
+                    (unsigned int)GetLastError());
             attempts++;
             Sleep(sleep_time_ms);
         }
@@ -77,6 +77,6 @@ int pbcopy_main() {
         GlobalFree(h);
     }
     DWORD last_error = GetLastError();
-    fprintf(stderr, "Error occurred (or not a pipe): 0x%lx.\n", last_error);
+    fprintf(stderr, "Error occurred (or not a pipe): 0x%x.\n", (unsigned int)last_error);
     return last_error;
 }
