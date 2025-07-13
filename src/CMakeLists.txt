@@ -14,6 +14,7 @@ set(GCC_CLANG_DEBUG_C_FLAGS
     -Werror=return-type
     -Wmissing-braces
     -Wmissing-field-initializers
+    -Wno-keyword-macro
     -Wno-missing-prototypes
     -Wno-strict-prototypes
     -Wno-trigraphs

@@ -14,7 +14,7 @@ jobs:
         run: >-
           cmake -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -B ${{github.workspace}}/build
           --install-prefix ${{github.workspace}}/build/prefix
-          -DBUILD_TESTS=ON
+          -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON
       - name: Build
         run: cmake --build ${{github.workspace}}/build --verbose --config ${{matrix.build-type}}
       - name: Install
@@ -52,7 +52,7 @@ jobs:
       - name: Build
         run: cmake --build ${{github.workspace}}/build --verbose
       - name: Run tests
-        run: ctest --test-dir ${{github.workspace}}/build/native/tests --verbose
+        run: ctest --test-dir ${{github.workspace}}/build/src --verbose
     strategy:
       fail-fast: false
       matrix:
