@@ -78,36 +78,15 @@ if(WIN32
   set(EXECS pbcopy pbpaste)
   foreach(exe ${EXECS})
     add_executable(${exe} ${exe}_main.c ${exe}.c macros.h)
+    configure_file("version.rc.in" version.rc @ONLY)
+    target_sources(${exe} PRIVATE version.rc)
     add_min_winnt(${exe})
     add_flags(${exe})
     add_asan(${exe})
     add_ubsan(${exe})
   endforeach()
   install(TARGETS pbcopy pbpaste RUNTIME)
-  install(FILES ../man/pbcopy.1 ../man/pbpaste.1 TYPE MAN)
-  # FIXME include license file in zip
-
-  # FIXME install path should not have version number
-
-  # FIXME may need Visual C++ runtime
-
-  # FIXME missing license in installer
-
-  # FIXME Set publisher
-
-  # FIXME Set 'file description'?
-
-  # FIXME Set Product name
-
-  # FIXME Set 'file version'?
-
-  # FIXME Set Product version
-
-  # FIXME Set Copyright
-
-  # FIXME Set language
-
-  # FIXME No UNIX-style packaging. Just have a single root.
+  install(FILES ../man/pbcopy.1 ../man/pbpaste.1 DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/man/man1)
   set(CPACK_GENERATOR "NSIS;ZIP")
   include(CPack)
 endif()

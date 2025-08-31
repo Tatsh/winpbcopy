@@ -1,9 +1,9 @@
 {
   "configurations": [
     {
-      "cStandard": "c23",
+      "cStandard": "gnu23",
       "compilerPath": "/usr/bin/gcc",
-      "cppStandard": "c++23",
+      "cppStandard": "gnu++23",
       "includePath": [
         "${workspaceFolder}/src/**",
         "${workspaceFolder}/build/generated",
