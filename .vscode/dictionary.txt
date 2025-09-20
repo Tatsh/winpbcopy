@@ -5,6 +5,7 @@ bsky
 buglist
 buildsystems
 bytearray
+choco
 cmocka
 codeowners
 colorstyle

@@ -25,6 +25,8 @@ jobs:
         run: cmake --build ${{github.workspace}}/build --config Release
       - name: Install
         run: cmake --install ${{github.workspace}}/build --config Release
+      - name: Install NSIS
+        run: choco install nsis -y
       - name: Package
         run: cpack -C Release --config ${{github.workspace}}/build/CPackConfig.cmake
       - name: Upload package
@@ -74,6 +76,7 @@ jobs:
           pacboy: >-
             cmake:p
             ninja:p
+            nsis:p
             toolchain:p
           update: true
       - uses: actions/checkout@v5
