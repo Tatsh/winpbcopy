@@ -29,7 +29,8 @@ jobs:
         run: choco install nsis -y
       - name: Package
         run: cpack -C Release --config ${{github.workspace}}/build/CPackConfig.cmake
-      - name: Upload package
+      - if: ${{ github.ref_type == 'tag' }}
+        name: Upload package
         uses: softprops/action-gh-release@v2
         with:
           files: |
@@ -122,3 +123,5 @@ name: Build
   push:
     branches:
       - master
+    tags:
+      - 'v*.*.*'
