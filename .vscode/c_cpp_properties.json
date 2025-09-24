@@ -7,7 +7,7 @@
       "includePath": [
         "${workspaceFolder}/src/**",
         "${workspaceFolder}/build/generated",
-        "/usr/include/wine-staging-10.10/wine/windows"
+        "/usr/include/wine/windows"
       ],
       "name": "Linux"
     }
