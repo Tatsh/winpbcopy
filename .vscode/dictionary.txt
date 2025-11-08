@@ -71,12 +71,14 @@ ubsan
 ucrt
 udvare
 vcpkg
+vedantmgoyal
 versioninfo
 wchar
 wdeprecated
 wempty
 werror
 winegcc
+winget
 winpbcopy
 wiswa
 wmissing
