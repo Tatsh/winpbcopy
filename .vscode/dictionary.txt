@@ -25,6 +25,7 @@ fileflagsmask
 fileos
 filesubtype
 fileversion
+foxundermoon
 fsanitize
 gcov
 geninfo
@@ -33,10 +34,8 @@ gmem
 gmock
 gnucc
 gnucxx
-gtest
 haximus
 hglobal
-htmlcov
 ifdef
 interprocedural
 isatty
@@ -44,6 +43,7 @@ iwyu
 jsonnet
 jsonschema
 libcmocka
+libera
 libjsonnet
 mmnn
 mocka
@@ -55,11 +55,10 @@ nullptr
 pacboy
 pipx
 productversion
-pycache
 pyyaml
 reflow
-rpath
 schemafile
+shellformat
 softprops
 stdbool
 stdlib
@@ -70,7 +69,6 @@ typelib
 ubsan
 ucrt
 udvare
-vcpkg
 vedantmgoyal
 versioninfo
 wchar
