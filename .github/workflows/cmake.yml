@@ -1,8 +1,6 @@
 ---
 jobs:
   build:
-    permissions:
-      contents: write
     runs-on: windows-latest
     steps:
       - id: fixed_workspace
@@ -13,9 +11,6 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - name: Get Latest Tag
-        id: latest_tag
-        uses: WyriHaximus/github-action-get-previous-tag@v1
       - name: Configure
         run: >-
           cmake -B ${{github.workspace}}/build
@@ -29,14 +24,28 @@ jobs:
         run: choco install nsis -y
       - name: Package
         run: cpack -C Release --config ${{github.workspace}}/build/CPackConfig.cmake
+      - name: 'Upload Artifacts'
+        uses: 'actions/upload-artifact@v6'
+        with:
+          if-no-files-found: error
+          name: winpbcopy-official-Release
+          path: |
+            ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.exe
+            ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.zip
       - if: ${{ github.ref_type == 'tag' }}
         name: Upload package
         uses: softprops/action-gh-release@v2
         with:
+          fail_on_unmatched_files: true
           files: |
             ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.exe
             ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.zip
-          tag_name: ${{ steps.latest_tag.outputs.tag }}
+      - name: Attest
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: |
+            ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.exe
+            ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.exe
   build_cross:
     runs-on: ubuntu-latest
     steps:
@@ -53,14 +62,27 @@ jobs:
           -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
           -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc
           -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ -DCMAKE_SYSTEM_NAME=Windows
-          -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=${{matrix.lto}}
+          -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON
       - name: Build
         run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} --verbose
+      - name: Package
+        run: cpack -G ZIP -C ${{matrix.build-type}} --config ${{github.workspace}}/build/CPackConfig.cmake
+      - name: 'Upload Artifacts'
+        uses: 'actions/upload-artifact@v6'
+        with:
+          if-no-files-found: error
+          name: 'winpbcopy-cross-${{matrix.build-type}}'
+          path: |
+            ${{github.workspace}}/winpbcopy-*.zip
+      - name: Attest
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: |
+            ${{github.workspace}}/winpbcopy-*.zip
     strategy:
       fail-fast: false
       matrix:
         build-type: [Debug, Release]
-        lto: ['FALSE', 'TRUE']
   build_msys:
     runs-on: windows-latest
     steps:
@@ -102,6 +124,20 @@ jobs:
           cpack -C ${{matrix.build-type}}
           --config ${{steps.fixed_workspace.outputs.out}}/build/CPackConfig.cmake --verbose
         shell: msys2 {0}
+      - name: 'Upload Artifacts'
+        uses: 'actions/upload-artifact@v6'
+        with:
+          if-no-files-found: error
+          name: 'winpbcopy-msys-${{matrix.sys.name}}-${{matrix.build-type}}'
+          path: |
+            ${{github.workspace}}/winpbcopy-*.exe
+            ${{github.workspace}}/winpbcopy-*.zip
+      - name: Attest
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: |
+            ${{github.workspace}}/winpbcopy-*.exe
+            ${{github.workspace}}/winpbcopy-*.zip
     strategy:
       fail-fast: false
       matrix:
@@ -125,3 +161,7 @@ name: Build
       - master
     tags:
       - 'v*.*.*'
+permissions:
+  attestations: write
+  contents: write
+  id-token: write
