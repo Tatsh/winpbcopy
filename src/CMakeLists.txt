@@ -72,8 +72,7 @@ function(add_flags target)
   endif()
 endfunction()
 
-if(WIN32
-   OR MINGW)
+if(WIN32 OR MINGW)
   set(EXECS pbcopy pbpaste)
   foreach(exe ${EXECS})
     add_executable(${exe} ${exe}_main.c ${exe}.c macros.h)
@@ -86,7 +85,37 @@ if(WIN32
   endforeach()
   install(TARGETS pbcopy pbpaste RUNTIME)
   install(FILES ../man/pbcopy.1 ../man/pbpaste.1 DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/man/man1)
+  set(CPACK_PACKAGE_NAME "winpbcopy")
+  set(CPACK_PACKAGE_VENDOR "Tatsh")
   set(CPACK_GENERATOR "NSIS;ZIP")
+  set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/LICENSE.txt)
+  # Remove version from install path.
+  set(CPACK_PACKAGE_INSTALL_DIRECTORY "${CPACK_PACKAGE_NAME}")
+  set(CPACK_NSIS_DEFINES
+      "RequestExecutionLevel user
+!define /date CURRENT_YEAR \\\"%Y\\\"
+VIProductVersion \\\"${PROJECT_VERSION}.0\\\"
+VIAddVersionKey \\\"ProductName\\\" \\\"${DISPLAY_NAME}\\\"
+VIAddVersionKey \\\"CompanyName\\\" \\\"Tatsh\\\"
+VIAddVersionKey \\\"FileDescription\\\" \\\"${DISPLAY_NAME} installer.\\\"
+VIAddVersionKey \\\"FileVersion\\\" \\\"${PROJECT_VERSION}\\\"
+VIAddVersionKey \\\"ProductVersion\\\" \\\"${PROJECT_VERSION}.0\\\"
+VIAddVersionKey \\\"LegalCopyright\\\" \\\"Copyright © \\\${CURRENT_YEAR} Tatsh.\\\"
+VIAddVersionKey \\\"Comments\\\" \\\"${PROJECT_HOMEPAGE_URL}\\\"")
+  set(CPACK_NSIS_INSTALL_ROOT "$COMMONPROGRAMDATA")
+  set(CPACK_NSIS_CONTACT "https://bsky.app/profile/tatsh.bsky.social")
+  set(CPACK_NSIS_MANIFEST_DPI_AWARE ON)
+  set(CPACK_NSIS_URL_INFO_ABOUT ${PROJECT_HOMEPAGE_URL}/issues) # Support link in 'Programs and
+                                                                # Features'.
+  set(CPACK_NSIS_MODIFY_PATH ON)
+  if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(__cpack_system_name win64)
+  else()
+    set(__cpack_system_name win32)
+  endif()
+  set(CPACK_THREADS 0)
+  set(CPACK_PACKAGE_FILE_NAME
+      ${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION}-${__cpack_system_name}-${CMAKE_BUILD_TYPE})
   include(CPack)
 endif()
 

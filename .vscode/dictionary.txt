@@ -6,6 +6,7 @@ choco
 cmocka
 codeowners
 commitizen
+commonprogramdata
 coveragerc
 cpack
 cpptools
@@ -75,7 +76,6 @@ wchar
 wdeprecated
 wempty
 werror
-winegcc
 winget
 winpbcopy
 wiswa
