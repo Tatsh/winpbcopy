@@ -34,7 +34,7 @@ set(GCC_CLANG_DEBUG_C_FLAGS
     -Wunused-variable)
 
 function(add_min_winnt target)
-  if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU" OR CMAKE_C_COMPILER MATCHES "/winegcc$")
+  if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
     get_property(IS_64BIT GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS)
     # mingw can do 2000 without extra help. 64-bit requires at least XP.
     if(IS_64BIT AND NOT TARGET_VERSION MATCHES "^(0x501|0x6)")
@@ -49,21 +49,21 @@ function(add_min_winnt target)
 endfunction()
 
 function(add_asan target)
-  if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU" OR CMAKE_C_COMPILER MATCHES "/winegcc$")
+  if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
     target_compile_options(${target} PRIVATE $<$<BOOL:${ENABLE_ASAN}>:-fsanitize=address>)
     target_link_options(${target} PRIVATE $<$<BOOL:${ENABLE_ASAN}>:-fsanitize=address>)
   endif()
 endfunction()
 
 function(add_ubsan target)
-  if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU" OR CMAKE_C_COMPILER MATCHES "/winegcc$")
+  if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
     target_compile_options(${target} PRIVATE $<$<BOOL:${ENABLE_UBSAN}>:-fsanitize=undefined>)
     target_link_options(${target} PRIVATE $<$<BOOL:${ENABLE_UBSAN}>:-fsanitize=undefined>)
   endif()
 endfunction()
 
 function(add_flags target)
-  if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU" OR CMAKE_C_COMPILER MATCHES "/winegcc$")
+  if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
     target_compile_options(${target} PRIVATE ${GCC_CLANG_SHARED_C_FLAGS}
                                              $<$<CONFIG:Debug>:${GCC_CLANG_DEBUG_C_FLAGS}>)
   else()
@@ -73,8 +73,7 @@ function(add_flags target)
 endfunction()
 
 if(WIN32
-   OR MINGW
-   OR CMAKE_C_COMPILER MATCHES "winegcc")
+   OR MINGW)
   set(EXECS pbcopy pbpaste)
   foreach(exe ${EXECS})
     add_executable(${exe} ${exe}_main.c ${exe}.c macros.h)
