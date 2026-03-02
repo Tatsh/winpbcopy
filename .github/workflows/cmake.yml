@@ -41,7 +41,7 @@ jobs:
             ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.exe
             ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.zip
       - name: Attest
-        uses: actions/attest-build-provenance@v3
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: |
             ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.exe
@@ -75,7 +75,7 @@ jobs:
           path: |
             ${{github.workspace}}/winpbcopy-*.zip
       - name: Attest
-        uses: actions/attest-build-provenance@v3
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: |
             ${{github.workspace}}/winpbcopy-*.zip
@@ -133,7 +133,7 @@ jobs:
             ${{github.workspace}}/winpbcopy-*.exe
             ${{github.workspace}}/winpbcopy-*.zip
       - name: Attest
-        uses: actions/attest-build-provenance@v3
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: |
             ${{github.workspace}}/winpbcopy-*.exe
