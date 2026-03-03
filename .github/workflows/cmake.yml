@@ -25,7 +25,7 @@ jobs:
       - name: Package
         run: cpack -C Release --config ${{github.workspace}}/build/CPackConfig.cmake
       - name: 'Upload Artifacts'
-        uses: 'actions/upload-artifact@v6'
+        uses: 'actions/upload-artifact@v7'
         with:
           if-no-files-found: error
           name: winpbcopy-official-Release
@@ -68,7 +68,7 @@ jobs:
       - name: Package
         run: cpack -G ZIP -C ${{matrix.build-type}} --config ${{github.workspace}}/build/CPackConfig.cmake
       - name: 'Upload Artifacts'
-        uses: 'actions/upload-artifact@v6'
+        uses: 'actions/upload-artifact@v7'
         with:
           if-no-files-found: error
           name: 'winpbcopy-cross-${{matrix.build-type}}'
@@ -125,7 +125,7 @@ jobs:
           --config ${{steps.fixed_workspace.outputs.out}}/build/CPackConfig.cmake --verbose
         shell: msys2 {0}
       - name: 'Upload Artifacts'
-        uses: 'actions/upload-artifact@v6'
+        uses: 'actions/upload-artifact@v7'
         with:
           if-no-files-found: error
           name: 'winpbcopy-msys-${{matrix.sys.name}}-${{matrix.build-type}}'
