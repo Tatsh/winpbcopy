@@ -27,12 +27,7 @@ local utils = import 'utils.libjsonnet';
       ],
     },
   },
-  package_json+: {
-    scripts+: {
-      'check-formatting': "cmake-format --check CMakeLists.txt src/CMakeLists.txt && clang-format -n src/*.c src/*.h && prettier -c . && markdownlint-cli2 '**/*.md' '#node_modules'",
-      format: 'cmake-format -i CMakeLists.txt src/CMakeLists.txt && clang-format -i src/*.c src/*.h && yarn prettier -w .',
-    },
-  },
+  clang_format_args: 'src/*.c src/*.h',
   vscode+: {
     c_cpp+: {
       configurations: [
