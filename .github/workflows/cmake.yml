@@ -34,7 +34,7 @@ jobs:
             ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.zip
       - if: ${{ github.ref_type == 'tag' }}
         name: Upload package
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           fail_on_unmatched_files: true
           files: |
