@@ -1,6 +1,7 @@
 local utils = import 'utils.libjsonnet';
 
 {
+  uses_user_defaults: true,
   project_type: 'c',
   project_name: 'winpbcopy',
   version: '0.0.4',
@@ -9,9 +10,6 @@ local utils = import 'utils.libjsonnet';
   want_main: false,
   want_codeql: false,
   want_tests: false,
-  copilot+: {
-    intro: "winpbcopy simulates macOS' pbcopy/pbpaste commands.",
-  },
   // C/C++ only
   vcpkg+: {
     dependencies: [{

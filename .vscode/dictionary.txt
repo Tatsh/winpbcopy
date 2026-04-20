@@ -1,3 +1,4 @@
+Ångström
 asan
 autosort
 bsky
@@ -6,6 +7,7 @@ choco
 cmocka
 commitizen
 commonprogramdata
+cooldown
 coveragerc
 cpack
 ctest
@@ -15,11 +17,11 @@ dbuild
 dcmake
 denable
 docstrings
-dorny
 dunicode
 egor
 endforeach
 endfunction
+esac
 esbenp
 fileflags
 fileflagsmask
@@ -40,6 +42,7 @@ ifdef
 interprocedural
 isatty
 iwyu
+jinja
 jsonnet
 jsonschema
 libcmocka
@@ -53,14 +56,17 @@ msvc
 msys
 msystem
 mypy
+npmjs
 nsis
 nullptr
 oneline
 pacboy
 pipx
 productversion
+pylock
 reflow
 regen
+ripgreprc
 schemafile
 shellcheck
 shellformat
@@ -86,6 +92,7 @@ werror
 winget
 winpbcopy
 wiswa
+wiswa's
 wmissing
 wparentheses
 wpointer
@@ -97,4 +104,3 @@ wunknown
 wunreachable
 wunused
 yarnrc
-ångström
