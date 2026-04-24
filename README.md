@@ -8,7 +8,7 @@
 [![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/winpbcopy/v0.0.4/master)](https://github.com/Tatsh/winpbcopy/compare/v0.0.4...master)
 [![QA](https://github.com/Tatsh/winpbcopy/actions/workflows/qa.yml/badge.svg)](https://github.com/Tatsh/winpbcopy/actions/workflows/qa.yml)
 [![Dependabot](https://img.shields.io/badge/Dependabot-enabled-blue?logo=dependabot)](https://github.com/dependabot)
-[![GitHub Pages](https://github.com/Tatsh/winpbcopy/actions/workflows/pages.yml/badge.svg)](https://tatsh.github.io/winpbcopy/)
+[![pages-build-deployment](https://github.com/Tatsh/winpbcopy/actions/workflows/pages/pages-build-deployment/badge.svg)](https://tatsh.github.io/winpbcopy/)
 [![Stargazers](https://img.shields.io/github/stars/Tatsh/winpbcopy?logo=github&style=flat)](https://github.com/Tatsh/winpbcopy/stargazers)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 [![CMake](https://img.shields.io/badge/CMake-6E6E6E?logo=cmake)](https://cmake.org/)
