@@ -4,7 +4,7 @@ local utils = import 'utils.libjsonnet';
   uses_user_defaults: true,
   project_type: 'c',
   project_name: 'winpbcopy',
-  version: '0.0.4',
+  version: '0.0.5',
   description: 'pbcopy/paste for Windows.',
   keywords: ['clipboard', 'console', 'terminal', 'windows'],
   want_main: false,

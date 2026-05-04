@@ -9,6 +9,19 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.0.5] - 2026-05-04
+
+### Changed
+
+- Adapted GitHub workflows from the bpmdetect project, including build artefact uploads,
+  attestations, NSIS packaging, and a winget publish workflow.
+- Updated CMake NSIS settings and removed winegcc support.
+- Bumped development dependencies, including cspell, prettier, prettier-plugin-sort-json, and
+  markdownlint-cli2.
+- Bumped GitHub Actions dependencies, including actions/checkout, actions/upload-artifact,
+  actions/attest-build-provenance, github/codeql-action, softprops/action-gh-release, and
+  egor-tensin/setup-mingw.
+
 ## [0.0.4]
 
 ### Changed
@@ -25,7 +38,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 First release.
 
-[unreleased]: https://github.com/Tatsh/winpbcopy/compare/v0.0.4...HEAD
+[unreleased]: https://github.com/Tatsh/winpbcopy/compare/v0.0.5...HEAD
+[0.0.5]: https://github.com/Tatsh/winpbcopy/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/Tatsh/winpbcopy/compare/v0.0.3...v0.0.4
 [0.0.2]: https://github.com/Tatsh/winpbcopy/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/Tatsh/winpbcopy/releases/tag/v0.0.1

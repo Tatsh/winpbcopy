@@ -3,6 +3,7 @@ asan
 autobuild
 autoinstall
 autosort
+bpmdetect
 bsky
 buildsystems
 choco
@@ -98,6 +99,7 @@ wchar
 wdeprecated
 wempty
 werror
+winegcc
 winget
 winpbcopy
 wiswa
