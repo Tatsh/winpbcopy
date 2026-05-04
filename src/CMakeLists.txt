@@ -108,14 +108,16 @@ VIAddVersionKey \\\"Comments\\\" \\\"${PROJECT_HOMEPAGE_URL}\\\"")
   set(CPACK_NSIS_URL_INFO_ABOUT ${PROJECT_HOMEPAGE_URL}/issues) # Support link in 'Programs and
                                                                 # Features'.
   set(CPACK_NSIS_MODIFY_PATH ON)
-  if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-    set(__cpack_system_name win64)
-  else()
-    set(__cpack_system_name win32)
+  if(NOT CPACK_SYSTEM_NAME)
+    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+      set(CPACK_SYSTEM_NAME win64)
+    else()
+      set(CPACK_SYSTEM_NAME win32)
+    endif()
   endif()
   set(CPACK_THREADS 0)
   set(CPACK_PACKAGE_FILE_NAME
-      ${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION}-${__cpack_system_name}-${CMAKE_BUILD_TYPE})
+      ${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION}-${CPACK_SYSTEM_NAME}-${CMAKE_BUILD_TYPE})
   include(CPack)
 endif()
 

@@ -1,96 +1,18 @@
 ---
 jobs:
-  build:
-    runs-on: windows-latest
-    steps:
-      - id: fixed_workspace
-        name: Fix path (Windows)
-        run: |
-          echo out=$("${{github.workspace}}" -Replace "\\","/") |
-          Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - name: Configure
-        run: >-
-          cmake -B ${{github.workspace}}/build
-          -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON
-          --install-prefix ${{github.workspace}}/build/prefix
-      - name: Build
-        run: cmake --build ${{github.workspace}}/build --config Release
-      - name: Install
-        run: cmake --install ${{github.workspace}}/build --config Release
-      - name: Install NSIS
-        run: choco install nsis -y
-      - name: Package
-        run: cpack -C Release --config ${{github.workspace}}/build/CPackConfig.cmake
-      - name: 'Upload Artifacts'
-        uses: 'actions/upload-artifact@v7'
-        with:
-          if-no-files-found: error
-          name: winpbcopy-official-Release
-          path: |
-            ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.exe
-            ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.zip
-      - if: ${{ github.ref_type == 'tag' }}
-        name: Upload package
-        uses: softprops/action-gh-release@v3
-        with:
-          fail_on_unmatched_files: true
-          files: |
-            ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.exe
-            ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.zip
-      - name: Attest
-        uses: actions/attest-build-provenance@v4
-        with:
-          subject-path: |
-            ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.exe
-            ${{steps.fixed_workspace.outputs.out}}/winpbcopy-*.exe
-  build_cross:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up MinGW
-        uses: egor-tensin/setup-mingw@v3
-        with:
-          platform: x64
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - name: Configure
-        run: >-
-          cmake -B ${{github.workspace}}/build
-          -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
-          -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc
-          -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ -DCMAKE_SYSTEM_NAME=Windows
-          -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON
-      - name: Build
-        run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} --verbose
-      - name: Package
-        run: cpack -G ZIP -C ${{matrix.build-type}} --config ${{github.workspace}}/build/CPackConfig.cmake
-      - name: 'Upload Artifacts'
-        uses: 'actions/upload-artifact@v7'
-        with:
-          if-no-files-found: error
-          name: 'winpbcopy-cross-${{matrix.build-type}}'
-          path: |
-            ${{github.workspace}}/winpbcopy-*.zip
-      - name: Attest
-        uses: actions/attest-build-provenance@v4
-        with:
-          subject-path: |
-            ${{github.workspace}}/winpbcopy-*.zip
-    strategy:
-      fail-fast: false
-      matrix:
-        build-type: [Debug, Release]
-  build_msys:
-    runs-on: windows-latest
+  build-msys:
+    runs-on: ${{ matrix.sys.runner }}
     steps:
       - id: fixed_workspace
         name: Fix path
         run: >-
           echo out=$("${{github.workspace}}" -Replace "\\","/") | Out-File
           -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+      - if: matrix.sys.name == 'clangarm64'
+        name: Install NSIS via Chocolatey
+        run: |
+          choco install nsis -y --no-progress
+          'C:\Program Files (x86)\NSIS' | Out-File -Append -Encoding utf8 -FilePath $env:GITHUB_PATH
       - uses: msys2/setup-msys2@v2
         with:
           install: >-
@@ -99,7 +21,7 @@ jobs:
           pacboy: >-
             cmake:p
             ninja:p
-            nsis:p
+            ${{ matrix.sys.name == 'clangarm64' && ' ' || 'nsis:p' }}
             toolchain:p
           update: true
       - uses: actions/checkout@v6
@@ -110,6 +32,7 @@ jobs:
           cmake -G Ninja -B ${{steps.fixed_workspace.outputs.out}}/build
           --install-prefix ${{steps.fixed_workspace.outputs.out}}/build/prefix
           -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
+          -DCPACK_SYSTEM_NAME=${{matrix.sys.cpack_system}}
         shell: msys2 {0}
       - name: Build
         run: cmake --build ${{steps.fixed_workspace.outputs.out}}/build --verbose
@@ -128,7 +51,7 @@ jobs:
         uses: 'actions/upload-artifact@v7'
         with:
           if-no-files-found: error
-          name: 'winpbcopy-msys-${{matrix.sys.name}}-${{matrix.build-type}}'
+          name: winpbcopy-${{ matrix.build-type }}-${{ matrix.sys.name }}
           path: |
             ${{github.workspace}}/winpbcopy-*.exe
             ${{github.workspace}}/winpbcopy-*.zip
@@ -138,29 +61,95 @@ jobs:
           subject-path: |
             ${{github.workspace}}/winpbcopy-*.exe
             ${{github.workspace}}/winpbcopy-*.zip
+      - if: ${{ github.ref_type == 'tag' && matrix.sys.release }}
+        name: Upload package
+        uses: softprops/action-gh-release@v3
+        with:
+          draft: true
+          fail_on_unmatched_files: true
+          files: |
+            ${{github.workspace}}/winpbcopy-*.exe
+            ${{github.workspace}}/winpbcopy-*.zip
     strategy:
       fail-fast: false
       matrix:
         build-type: [Debug, Release]
         sys:
-          - env: clang-x86_64
+          - cpack_system: clang64
+            env: clang-x86_64
             name: clang64
-          - env: i686
+            release: false
+            runner: windows-latest
+          - cpack_system: mingw32
+            env: i686
             name: mingw32
-          - env: x86_64
+            release: false
+            runner: windows-latest
+          - cpack_system: mingw64
+            env: x86_64
             name: mingw64
-          - env: ucrt-x86_64
+            release: false
+            runner: windows-latest
+          - cpack_system: ucrt64
+            env: ucrt-x86_64
             name: ucrt64
+            release: true
+            runner: windows-latest
+          - cpack_system: clangarm64
+            env: clang-aarch64
+            name: clangarm64
+            release: true
+            runner: windows-11-arm
+  build-cross:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up MinGW
+        uses: egor-tensin/setup-mingw@v3
+        with:
+          platform: x64
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Configure
+        run: >-
+          cmake -B ${{github.workspace}}/build
+          -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
+          -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
+          -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc
+          -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++
+          -DCMAKE_SYSTEM_NAME=Windows
+          -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON
+          -DCPACK_SYSTEM_NAME=mingw-cross-x86_64
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} --verbose
+      - name: Package
+        run: >-
+          cpack -G ZIP -C ${{matrix.build-type}}
+          --config ${{github.workspace}}/build/CPackConfig.cmake
+      - name: 'Upload Artifacts'
+        uses: 'actions/upload-artifact@v7'
+        with:
+          if-no-files-found: error
+          name: 'winpbcopy-cross-${{matrix.build-type}}'
+          path: |
+            ${{github.workspace}}/winpbcopy-*.zip
+      - name: Attest
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: |
+            ${{github.workspace}}/winpbcopy-*.zip
+    strategy:
+      fail-fast: false
+      matrix:
+        build-type: [Debug, Release]
 name: Build
 'on':
-  pull_request:
-    branches:
-      - master
   push:
-    branches:
-      - master
+    branches: [master]
     tags:
       - 'v*.*.*'
+  pull_request:
+    branches: [master]
 permissions:
   attestations: write
   contents: write
