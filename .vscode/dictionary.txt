@@ -21,7 +21,6 @@ dunicode
 egor
 endforeach
 endfunction
-esac
 esbenp
 fileflags
 fileflagsmask
