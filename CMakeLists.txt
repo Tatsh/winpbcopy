@@ -24,6 +24,8 @@ if(MSVC)
   set(TARGET_VERSION
       0x600
       CACHE STRING "Target Windows version in 0xMMNN format.")
+elseif(MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 4)
+  set(TARGET_VERSION 0x500)
 else()
   set(TARGET_VERSION 0x501)
 endif()

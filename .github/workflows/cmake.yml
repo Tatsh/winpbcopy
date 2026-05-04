@@ -83,7 +83,7 @@ jobs:
           - cpack_system: mingw32
             env: i686
             name: mingw32
-            release: false
+            release: true
             runner: windows-latest
           - cpack_system: mingw64
             env: x86_64
