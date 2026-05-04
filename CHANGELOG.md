@@ -9,6 +9,19 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.0.6] - 2026-05-04
+
+### Added
+
+- Published 32-bit MinGW (i686) installer and ZIP artefacts to GitHub releases.
+
+### Changed
+
+- Targeted Windows 2000 (`_WIN32_WINNT=0x500`) for 32-bit MinGW builds; other configurations
+  continue to target Windows XP or Vista as before.
+- Trimmed the build-msys workflow matrix to only the systems that publish release artefacts
+  (`mingw32`, `ucrt64`, and `clangarm64`), removing the now-redundant `release` flag.
+
 ## [0.0.5] - 2026-05-04
 
 ### Changed
@@ -38,7 +51,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 First release.
 
-[unreleased]: https://github.com/Tatsh/winpbcopy/compare/v0.0.5...HEAD
+[unreleased]: https://github.com/Tatsh/winpbcopy/compare/v0.0.6...HEAD
+[0.0.6]: https://github.com/Tatsh/winpbcopy/compare/v0.0.5...v0.0.6
 [0.0.5]: https://github.com/Tatsh/winpbcopy/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/Tatsh/winpbcopy/compare/v0.0.3...v0.0.4
 [0.0.2]: https://github.com/Tatsh/winpbcopy/compare/v0.0.1...v0.0.2
