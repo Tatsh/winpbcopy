@@ -61,7 +61,7 @@ jobs:
           subject-path: |
             ${{github.workspace}}/winpbcopy-*.exe
             ${{github.workspace}}/winpbcopy-*.zip
-      - if: ${{ github.ref_type == 'tag' && matrix.sys.release }}
+      - if: ${{ github.ref_type == 'tag' }}
         name: Upload package
         uses: softprops/action-gh-release@v3
         with:
@@ -75,30 +75,17 @@ jobs:
       matrix:
         build-type: [Debug, Release]
         sys:
-          - cpack_system: clang64
-            env: clang-x86_64
-            name: clang64
-            release: false
-            runner: windows-latest
           - cpack_system: mingw32
             env: i686
             name: mingw32
-            release: true
-            runner: windows-latest
-          - cpack_system: mingw64
-            env: x86_64
-            name: mingw64
-            release: false
             runner: windows-latest
           - cpack_system: ucrt64
             env: ucrt-x86_64
             name: ucrt64
-            release: true
             runner: windows-latest
           - cpack_system: clangarm64
             env: clang-aarch64
             name: clangarm64
-            release: true
             runner: windows-11-arm
   build-cross:
     runs-on: ubuntu-latest
