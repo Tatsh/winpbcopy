@@ -6,6 +6,12 @@ local utils = import 'utils.libjsonnet';
   project_name: 'winpbcopy',
   version: '0.0.6',
   description: 'pbcopy/paste for Windows.',
+  social+: {
+    custom_badges: [
+      '[![Tests](https://github.com/Tatsh/winpbcopy/actions/workflows/tests.yml/badge.svg)](https://github.com/Tatsh/winpbcopy/actions/workflows/tests.yml)',
+      '[![Coverage Status](https://coveralls.io/repos/github/Tatsh/winpbcopy/badge.svg?branch=master)](https://coveralls.io/github/Tatsh/winpbcopy?branch=master)',
+    ],
+  },
   keywords: ['clipboard', 'console', 'terminal', 'windows'],
   want_main: false,
   want_codeql: false,
