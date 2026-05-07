@@ -1,6 +1,5 @@
 Ångström
 asan
-autobuild
 autoinstall
 autosort
 bpmdetect
@@ -37,7 +36,6 @@ fileversion
 foxundermoon
 fsanitize
 gcov
-geninfo
 ggdb
 gmem
 gmock
@@ -67,10 +65,10 @@ nsis
 nullptr
 oneline
 pacboy
-pipx
 pkgbuild
 pkgrel
 pkgver
+preapproved
 productversion
 pylock
 reflow

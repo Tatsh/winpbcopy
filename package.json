@@ -1,8 +1,8 @@
 {
   "_wiswa": {
     "commandLine": "wiswa",
-    "lastRun": "2026-05-04T01:52:41Z",
-    "version": "c3a3bda-dirty"
+    "lastRun": "2026-05-07T23:56:27Z",
+    "version": "fc275a7-dirty"
   },
   "contributors": ["Andrew Udvare <audvare@gmail.com>"],
   "cspell": {
@@ -105,7 +105,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:Tatsh/winpbcopy.git"
+    "url": "git+https://github.com/Tatsh/winpbcopy.git"
   },
   "scripts": {
     "build": "cmake --preset=default -DBUILD_DOCS=ON && cmake --build build",
