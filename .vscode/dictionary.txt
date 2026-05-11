@@ -1,7 +1,6 @@
 Ångström
 asan
 autoinstall
-autosort
 bpmdetect
 bsky
 buildsystems
@@ -60,7 +59,6 @@ msvc
 msys
 msystem
 mypy
-npmjs
 nsis
 nullptr
 oneline
@@ -71,6 +69,7 @@ pkgver
 preapproved
 productversion
 pylock
+pyproject
 reflow
 regen
 ripgreprc
@@ -89,6 +88,8 @@ typelib
 ubsan
 ucrt
 udvare
+undraft
+undrafted
 vedantmgoyal
 vendored
 venv
@@ -103,6 +104,7 @@ winpbcopy
 wiswa
 wiswa's
 wmissing
+worktree
 wparentheses
 wpointer
 wshadow
