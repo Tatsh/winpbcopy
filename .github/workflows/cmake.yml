@@ -75,10 +75,6 @@ jobs:
       matrix:
         build-type: [Debug, Release]
         sys:
-          - cpack_system: mingw32
-            env: i686
-            name: mingw32
-            runner: windows-latest
           - cpack_system: ucrt64
             env: ucrt-x86_64
             name: ucrt64
