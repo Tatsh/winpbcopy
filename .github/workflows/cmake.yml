@@ -24,7 +24,7 @@ jobs:
             ${{ matrix.sys.name == 'clangarm64' && ' ' || 'nsis:p' }}
             toolchain:p
           update: true
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Configure
@@ -90,7 +90,7 @@ jobs:
         uses: egor-tensin/setup-mingw@v3
         with:
           platform: x64
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Configure
