@@ -9,7 +9,6 @@ clangarm
 cmocka
 commitizen
 commonprogramdata
-cooldown
 coveragerc
 coverallsapp
 cpack
@@ -40,6 +39,7 @@ gmem
 gmock
 gnucc
 gnucxx
+handoff
 hglobal
 ifdef
 interprocedural
@@ -60,6 +60,7 @@ msys
 msystem
 mypy
 nsis
+nullglob
 nullptr
 oneline
 pacboy
@@ -68,6 +69,7 @@ pkgrel
 pkgver
 preapproved
 productversion
+pyinstaller
 pylock
 pyproject
 reflow
@@ -76,8 +78,10 @@ ripgreprc
 schemafile
 shellcheck
 shellformat
+shopt
 snapcraft
 softprops
+statusline
 stdbool
 stdlib
 strequal
@@ -115,3 +119,4 @@ wunknown
 wunreachable
 wunused
 yarnrc
+zizmor

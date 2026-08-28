@@ -1,8 +1,8 @@
 {
   "_wiswa": {
     "commandLine": "wiswa",
-    "lastRun": "2026-05-11T19:51:49Z",
-    "version": "eb1f7cf"
+    "lastRun": "2026-08-28T01:37:39Z",
+    "version": "22e219a"
   },
   "contributors": ["Andrew Udvare <audvare@gmail.com>"],
   "cspell": {
@@ -74,7 +74,7 @@
     "showFound": true
   },
   "name": "winpbcopy",
-  "packageManager": "yarn@4.14.1",
+  "packageManager": "yarn@4.18.0",
   "prettier": {
     "endOfLine": "lf",
     "iniSpaceAroundEquals": true,
