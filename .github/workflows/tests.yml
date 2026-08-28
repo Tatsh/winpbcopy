@@ -5,9 +5,10 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -35,7 +36,7 @@ jobs:
           --keep-going
       - if: ${{ matrix.build-type == 'Debug' }}
         name: Coveralls
-        uses: coverallsapp/github-action@v2
+        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329
     strategy:
       fail-fast: false
       matrix:
