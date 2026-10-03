@@ -1,4 +1,3 @@
-Ångström
 asan
 autoinstall
 bpmdetect
@@ -59,9 +58,11 @@ msvc
 msys
 msystem
 mypy
+noone
 nsis
 nullglob
 nullptr
+numpydoc
 oneline
 pacboy
 pkgbuild
@@ -108,7 +109,6 @@ winpbcopy
 wiswa
 wiswa's
 wmissing
-worktree
 wparentheses
 wpointer
 wshadow
@@ -120,3 +120,4 @@ wunreachable
 wunused
 yarnrc
 zizmor
+Ångström
