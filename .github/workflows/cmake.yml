@@ -77,7 +77,7 @@ jobs:
       - env:
           GH_TOKEN: ${{ github.token }}
           WORKSPACE: '${{steps.fixed_workspace.outputs.out}}'
-        if: ${{ github.ref_type == 'tag' }}
+        if: ${{ github.ref_type == 'tag' && matrix.build-type == 'Release' }}
         name: Upload package
         run: |
           shopt -s nullglob
