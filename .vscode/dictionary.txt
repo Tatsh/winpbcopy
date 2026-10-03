@@ -8,6 +8,7 @@ clangarm
 cmocka
 commitizen
 commonprogramdata
+concrt
 coveragerc
 coverallsapp
 cpack
@@ -55,6 +56,9 @@ mktemp
 mmnn
 mocka
 msvc
+msvcp
+msvcprtd
+msvcrtd
 msys
 msystem
 mypy
@@ -92,9 +96,13 @@ tostring
 typelib
 ubsan
 ucrt
+ucrtbased
 udvare
 undraft
 undrafted
+vccorlib
+vcomp
+vcruntime
 vedantmgoyal
 vendored
 venv

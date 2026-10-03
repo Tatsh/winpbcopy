@@ -60,6 +60,42 @@ jobs:
           cpack -C ${{matrix.build-type}}
           --config "$WORKSPACE/build/CPackConfig.cmake" --verbose
         shell: msys2 {0}
+      # Release binaries link the release CRT. The scan below reports markers such as
+      # VCRUNTIME140D or ucrtbased and fails the job when an installed EXE or DLL references a
+      # debug runtime.
+      - if: matrix.build-type == 'Release'
+        name: Check for debug runtime linkage
+        run: |
+          $markers = @(
+            'VCRUNTIME140D',
+            'MSVCP140D',
+            'VCOMP140D',
+            'CONCRT140D',
+            'VCCORLIB140D',
+            'ucrtbased',
+            'MSVCRTD',
+            'MSVCPRTD'
+          )
+          $failed = $false
+          $binaries = Get-ChildItem -Path "$env:GITHUB_WORKSPACE/build/prefix" -Recurse -File `
+            -Include *.dll, *.exe
+          if (-not $binaries) {
+            Write-Host '::error::No installed binaries were found to scan.'
+            exit 1
+          }
+          $binaries | ForEach-Object {
+            $bytes = [System.IO.File]::ReadAllBytes($_.FullName)
+            $text = [System.Text.Encoding]::ASCII.GetString($bytes)
+            foreach ($marker in $markers) {
+              if ($text.Contains($marker)) {
+                Write-Host "::error::$($_.Name) references debug runtime $marker."
+                $failed = $true
+              }
+            }
+          }
+          if ($failed) {
+            exit 1
+          }
       - name: 'Upload Artifacts'
         uses: 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a'
         with:
