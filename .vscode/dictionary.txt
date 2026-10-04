@@ -70,6 +70,7 @@ nullptr
 numpydoc
 oneline
 pacboy
+pipx
 pkgbuild
 pkgrel
 pkgver
