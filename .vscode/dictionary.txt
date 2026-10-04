@@ -55,6 +55,7 @@ libsonnet
 mktemp
 mmnn
 mocka
+msix
 msvc
 msvcp
 msvcprtd

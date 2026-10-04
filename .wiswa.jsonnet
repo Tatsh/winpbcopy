@@ -20,12 +20,21 @@ local utils = import 'utils.libjsonnet';
   want_main: false,
   want_codeql: false,
   want_tests: false,
+  want_msys2: true,
   // C/C++ only
   vcpkg+: {
     dependencies: [{
       name: 'cmocka',
       platform: 'linux|mingw',
     }],
+  },
+  github+: {
+    workflows+: {
+      publish_msys2+: {
+        fork: 'Tatsh/MINGW-packages',
+        package_name: 'winpbcopy',
+      },
+    },
   },
   cz+: {
     commitizen+: {
