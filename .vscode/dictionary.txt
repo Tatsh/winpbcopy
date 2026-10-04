@@ -82,6 +82,7 @@ pyproject
 reflow
 regen
 ripgreprc
+sbclaude
 schemafile
 shellcheck
 shellformat
