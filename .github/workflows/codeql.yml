@@ -1,4 +1,7 @@
 ---
+concurrency:
+  cancel-in-progress: true
+  group: '${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}'
 env:
   CODEQL_EXTRACTOR_CPP_AUTOINSTALL_DEPENDENCIES: 'false'
 jobs:
@@ -25,8 +28,8 @@ jobs:
           languages: ${{ matrix.language }}
       - name: Build
         run: |
-          cmake -B ${{github.workspace}}/build -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Debug
-          cmake --build ${{github.workspace}}/build --verbose
+          cmake -B "${GITHUB_WORKSPACE}/build" -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Debug
+          cmake --build "${GITHUB_WORKSPACE}/build" --verbose
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@1c5b675653bb5c22dbe9b12b556ec555138e09fd
         with:
@@ -43,3 +46,4 @@ name: CodeQL
     branches: ['master']
   schedule:
     - cron: 42 10 * * 4
+permissions: {}
