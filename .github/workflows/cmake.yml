@@ -106,7 +106,7 @@ jobs:
             exit 1
           }
       - name: 'Upload Artifacts'
-        uses: 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a'
+        uses: 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9'
         with:
           if-no-files-found: error
           name: winpbcopy-${{ matrix.build-type }}-${{ matrix.sys.name }}
@@ -191,7 +191,7 @@ jobs:
           cpack -G ZIP -C "${BUILD_TYPE}"
           --config "${GITHUB_WORKSPACE}/build/CPackConfig.cmake"
       - name: 'Upload Artifacts'
-        uses: 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a'
+        uses: 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9'
         with:
           if-no-files-found: error
           name: 'winpbcopy-cross-${{matrix.build-type}}'
