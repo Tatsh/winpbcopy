@@ -10,6 +10,14 @@
 
 #include "macros.h"
 
+#ifndef check_expected_int
+#define check_expected_int(parameter) check_expected(parameter)
+#define check_expected_uint(parameter) check_expected(parameter)
+#define expect_int_value(function, parameter, value) expect_value(function, parameter, value)
+#define expect_uint_value(function, parameter, value) expect_value(function, parameter, value)
+#define will_return_uint_always(function, value) will_return_always(function, value)
+#endif
+
 extern int pbcopy_main();
 extern int pbpaste_main();
 
@@ -19,8 +27,8 @@ int __wrap_isatty(int fd) {
 }
 
 void *__wrap_GlobalAlloc(unsigned int uFlags, size_t dwBytes) {
-    check_expected(uFlags);
-    check_expected(dwBytes);
+    check_expected_uint(uFlags);
+    check_expected_uint(dwBytes);
     return mock_type(void *);
 }
 
@@ -46,9 +54,9 @@ int __wrap_OpenClipboard(void *hWndNewOwner) {
 }
 
 ssize_t __wrap_read(int fd, void *buf, size_t count) {
-    check_expected(fd);
+    check_expected_int(fd);
     check_expected_ptr(buf);
-    check_expected(count);
+    check_expected_uint(count);
     return mock_type(ssize_t);
 }
 
@@ -57,7 +65,7 @@ int __wrap_EmptyClipboard(void) {
 }
 
 void *__wrap_SetClipboardData(unsigned int uFormat, void *hMem) {
-    check_expected(uFormat);
+    check_expected_uint(uFormat);
     check_expected_ptr(hMem);
     return mock_type(void *);
 }
@@ -75,7 +83,7 @@ int __wrap_CloseClipboard(void) {
 }
 
 void *__wrap_GetClipboardData(unsigned int uFormat) {
-    check_expected(uFormat);
+    check_expected_uint(uFormat);
     return mock_type(void *);
 }
 
@@ -94,14 +102,14 @@ static void test_pbcopy_success(void **state) {
     _shared_mem[3] = L'l';
     _shared_mem[4] = L'o';
     _shared_mem[5] = L'\n';
-    expect_value(__wrap_read, fd, 0);
+    expect_int_value(__wrap_read, fd, 0);
     expect_any(__wrap_read, buf);
-    expect_value(__wrap_read, count, 0x200);
+    expect_uint_value(__wrap_read, count, 0x200);
     will_return(__wrap_read, 0xa00000);
 
     // Mock GlobalAlloc, GlobalLock, and GlobalUnlock
-    expect_value(__wrap_GlobalAlloc, uFlags, 0x42);
-    expect_value(__wrap_GlobalAlloc, dwBytes, 0xa00000);
+    expect_uint_value(__wrap_GlobalAlloc, uFlags, 0x42);
+    expect_uint_value(__wrap_GlobalAlloc, dwBytes, 0xa00000);
     will_return(__wrap_GlobalAlloc, (void *)0x1234);
 
     expect_any(__wrap_GlobalLock, hMem);
@@ -113,7 +121,7 @@ static void test_pbcopy_success(void **state) {
 
     will_return(__wrap_EmptyClipboard, 1);
 
-    expect_value(__wrap_SetClipboardData, uFormat, 1);
+    expect_uint_value(__wrap_SetClipboardData, uFormat, 1);
     expect_any(__wrap_SetClipboardData, hMem);
     will_return(__wrap_SetClipboardData, (void *)0x1234);
 
@@ -140,13 +148,13 @@ static void test_pbcopy_clipboard_fail(void **state) {
     _shared_mem[2] = L'i';
     _shared_mem[3] = L'l';
     _shared_mem[5] = L'\n';
-    expect_value(__wrap_read, fd, 0);
+    expect_int_value(__wrap_read, fd, 0);
     expect_any(__wrap_read, buf);
-    expect_value(__wrap_read, count, 0x200);
+    expect_uint_value(__wrap_read, count, 0x200);
     will_return(__wrap_read, 0xa00000);
 
-    expect_value(__wrap_GlobalAlloc, uFlags, 0x42);
-    expect_value(__wrap_GlobalAlloc, dwBytes, 0xa00000);
+    expect_uint_value(__wrap_GlobalAlloc, uFlags, 0x42);
+    expect_uint_value(__wrap_GlobalAlloc, dwBytes, 0xa00000);
     will_return(__wrap_GlobalAlloc, (void *)0x1234);
 
     expect_any(__wrap_GlobalLock, hMem);
@@ -154,9 +162,9 @@ static void test_pbcopy_clipboard_fail(void **state) {
 
     expect_any(__wrap_GlobalUnlock, hMem);
 
-    will_return_always(__wrap_OpenClipboard, 0);
+    will_return_uint_always(__wrap_OpenClipboard, 0);
 
-    will_return_always(__wrap_GetLastError, 1234);
+    will_return_uint_always(__wrap_GetLastError, 1234);
 
     expect_any(__wrap_GlobalFree, hMem);
 
@@ -182,14 +190,14 @@ static void test_pbcopy_set_clipboard_data_fail(void **state) {
     _shared_mem[3] = L'l';
     _shared_mem[4] = L'o';
     _shared_mem[5] = L'\n';
-    expect_value(__wrap_read, fd, 0);
+    expect_int_value(__wrap_read, fd, 0);
     expect_any(__wrap_read, buf);
-    expect_value(__wrap_read, count, 0x200);
+    expect_uint_value(__wrap_read, count, 0x200);
     will_return(__wrap_read, 0xa00000);
 
     // Mock GlobalAlloc, GlobalLock, and GlobalUnlock
-    expect_value(__wrap_GlobalAlloc, uFlags, 0x42);
-    expect_value(__wrap_GlobalAlloc, dwBytes, 0xa00000);
+    expect_uint_value(__wrap_GlobalAlloc, uFlags, 0x42);
+    expect_uint_value(__wrap_GlobalAlloc, dwBytes, 0xa00000);
     will_return(__wrap_GlobalAlloc, (void *)0x1234);
 
     expect_any(__wrap_GlobalLock, hMem);
@@ -201,11 +209,11 @@ static void test_pbcopy_set_clipboard_data_fail(void **state) {
 
     will_return(__wrap_EmptyClipboard, 1);
 
-    expect_value(__wrap_SetClipboardData, uFormat, 1);
+    expect_uint_value(__wrap_SetClipboardData, uFormat, 1);
     expect_any(__wrap_SetClipboardData, hMem);
     will_return(__wrap_SetClipboardData, (void *)0);
 
-    will_return_always(__wrap_GetLastError, 1234);
+    will_return_uint_always(__wrap_GetLastError, 1234);
 
     expect_any(__wrap_GlobalFree, hMem);
 
@@ -227,7 +235,7 @@ static void test_pbpaste_success(void **state) {
     _test_clipboard_data[1] = 'i';
     _test_clipboard_data[3] = '\0';
 
-    expect_value(__wrap_GetClipboardData, uFormat, 1);
+    expect_uint_value(__wrap_GetClipboardData, uFormat, 1);
     will_return(__wrap_GetClipboardData, _test_clipboard_data);
 
     will_return(__wrap_CloseClipboard, 1);
