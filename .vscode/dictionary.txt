@@ -10,6 +10,7 @@ cmocka
 commitizen
 commonprogramdata
 concrt
+copytree
 coveragerc
 coverallsapp
 cpack
@@ -46,7 +47,6 @@ hglobal
 ifdef
 interprocedural
 isatty
-iterdir
 iwyu
 jinja
 jsonnet
@@ -90,11 +90,13 @@ pyproject
 reflow
 regen
 ripgreprc
+rmtree
 sbclaude
 schemafile
 shellcheck
 shellformat
 shopt
+shutil
 snapcraft
 softprops
 statusline
