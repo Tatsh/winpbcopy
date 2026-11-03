@@ -1,3 +1,4 @@
+analyzer
 asan
 autoinstall
 bpmdetect
@@ -22,6 +23,7 @@ denable
 docstrings
 dunicode
 egor
+elif
 endforeach
 endfunction
 esac
@@ -44,12 +46,15 @@ hglobal
 ifdef
 interprocedural
 isatty
+iterdir
 iwyu
 jinja
 jsonnet
 jsonschema
+ldflags
 libcmocka
 libera
+libgcc
 libjsonnet
 libsonnet
 mktemp
@@ -63,6 +68,7 @@ msvcrtd
 msys
 msystem
 mypy
+nojekyll
 noone
 nsis
 nullglob
@@ -70,6 +76,7 @@ nullptr
 numpydoc
 oneline
 pacboy
+pathlib
 pipx
 pkgbuild
 pkgrel
