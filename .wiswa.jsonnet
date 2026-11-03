@@ -81,7 +81,12 @@ local utils = import 'utils.libjsonnet';
   want_scan_build: true,
   github+: { workflows+: {
     scan_build+: {
-      configure_command: 'cmake -S . -B build-scan -DCMAKE_BUILD_TYPE=Debug -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_C_COMPILER_TARGET=x86_64-w64-windows-gnu',
+      configure_command: |||-
+        cmake -S . -B build-scan -DCMAKE_BUILD_TYPE=Debug \
+          -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_C_COMPILER_TARGET=x86_64-w64-windows-gnu \
+          -DCMAKE_CXX_COMPILER_TARGET=x86_64-w64-windows-gnu \
+          -DCMAKE_RC_COMPILER=x86_64-w64-mingw32-windres
+      |||,
       documentation_steps: [
         {
           name: 'Build project homepage',
@@ -97,7 +102,7 @@ local utils = import 'utils.libjsonnet';
           name: 'Install build dependencies',
           run: |||
             sudo apt-get update
-            sudo apt-get install -y gcc-mingw-w64-x86-64
+            sudo apt-get install -y gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64
           |||,
         },
         {
