@@ -117,3 +117,4 @@ local utils = import 'utils.libjsonnet';
     },
   } },
 }
++ { static_analysis_paths: ['src'] }
