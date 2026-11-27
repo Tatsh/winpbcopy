@@ -1,4 +1,3 @@
-analyzer
 asan
 autoinstall
 bpmdetect
@@ -10,7 +9,6 @@ cmocka
 commitizen
 commonprogramdata
 concrt
-copytree
 coveragerc
 coverallsapp
 cpack
@@ -24,7 +22,6 @@ denable
 docstrings
 dunicode
 egor
-elif
 endforeach
 endfunction
 esac
@@ -51,10 +48,8 @@ iwyu
 jinja
 jsonnet
 jsonschema
-ldflags
 libcmocka
 libera
-libgcc
 libjsonnet
 libsonnet
 mktemp
@@ -76,8 +71,6 @@ nullptr
 numpydoc
 oneline
 pacboy
-pathlib
-pipefail
 pipx
 pkgbuild
 pkgrel
@@ -91,14 +84,12 @@ rdparty
 reflow
 regen
 ripgreprc
-rmtree
 sarif
 sbclaude
 schemafile
 shellcheck
 shellformat
 shopt
-shutil
 snapcraft
 softprops
 statusline
@@ -126,7 +117,6 @@ wchar
 wdeprecated
 wempty
 werror
-windres
 winegcc
 winget
 winpbcopy
